@@ -37,8 +37,6 @@ echo '
     </a>
   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
     <a id="addnew" class="dropdown-item btn btn-success">Add Role</a>
-    <a class="dropdown-item" href="#">Export</a>
-    <a class="dropdown-item" href="#">Other</a>
   </div>
   </div>
 
@@ -202,7 +200,7 @@ $(document).on('click', '.edit', function(){
           }
           
           $('#delete').modal('hide');
-          // window.location.reload();
+          window.location.reload();
         }
        });
 
