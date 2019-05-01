@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?php require('header.php'); ?>
+    <?php  
+        include('redirectToLoginIfNotLoggedIn.php');
+        include('redirectHome_AdminOnly.php');
+        require('header.php'); 
+        require('navbar.php'); 
+    ?>
 </head>
 <body>
 
@@ -80,17 +85,11 @@
                         echo '
                                     </select>
                                 </div>
+
+                                
                                 <div class="form-group col-md-4">
                                     <label>Sublocation:</label>
-                                    <select class="form-control" id="sublocation">
-
-
-
-
-
-
-
-                                    </select>
+                                    <input type="text" class="form-control" id="sublocation">
                                 </div>
 
                                 <div class="form-group col-md-8">
@@ -269,7 +268,23 @@ $(document).ready(function()
         var description = $('#description').val();
         var make = $('#make').val();
         var model = $('#model').val();
+
         var s1 = $('#s1').val();
+        var s2 = $('#s2').val();
+        var s3 = $('#s3').val();
+        var s4 = $('#s4').val();
+        var s5 = $('#s5').val();
+        var s6 = $('#s6').val();
+        var s7 = $('#s7').val();
+        var s8 = $('#s8').val();
+        var s9 = $('#s9').val();
+        var s10 = $('#s10').val();
+        var s11 = $('#s11').val();
+        var s12 = $('#s12').val();
+        var s13 = $('#s13').val();
+        var s14 = $('#s14').val();
+        var s15 = $('#s15').val();
+
         var countyNo = $('#countyNo').val();
         var cost = $('#cost').val();
         var comments = $('#comments').val();
@@ -285,7 +300,23 @@ $(document).ready(function()
         fd.append('description', description);
         fd.append('make', make);
         fd.append('model', model);
+
         fd.append('s1', s1);
+        fd.append('s2', s2);
+        fd.append('s3', s3);
+        fd.append('s4', s4);
+        fd.append('s5', s5);
+        fd.append('s6', s6);
+        fd.append('s7', s7);
+        fd.append('s8', s8);
+        fd.append('s9', s9);
+        fd.append('s10', s10);
+        fd.append('s11', s11);
+        fd.append('s12', s12);
+        fd.append('s13', s13);
+        fd.append('s14', s14);
+        fd.append('s15', s15);
+
         fd.append('countyNo', countyNo);
         fd.append('cost', cost);
         fd.append('comments', comments);
@@ -322,7 +353,7 @@ $(document).ready(function()
 
                 if (answer)
                 {
-                    myFunction();
+                    //myFunction();
                 }
                 else
                 {

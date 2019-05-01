@@ -1,56 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-	
-	<link rel="stylesheet" type="text/css" href="bootstrap.css" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
-    <link rel="stylesheet" type="text/css" href="bootstrap-table.css" />
-    <link rel="stylesheet" type="text/css" href="style.css">
 
-	<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
-	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  	<script type="text/javascript" src="RESOURCES/libs/FileSaver/FileSaver.min.js"></script>
-  	<script type="text/javascript" src="RESOURCES/tableExport.js"></script>
-	<script type="text/javascript" src="RESOURCES/libs/jsPDF/jspdf.min.js"></script>
-	<script type="text/javascript" src="RESOURCES/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.6.2/core.min.js"></script>
-	<script src="bootstrap-table.js"></script>
-	<script type="text/javascript" src="RESOURCES/extensions/toolbar/bootstrap-table-toolbar.js"></script>
-	<script type="text/javascript" src="export/libs/FileSaver/FileSaver.min.js"></script>
-  	<script type="text/javascript" src="export/libs/js-xlsx/xlsx.core.min.js"></script>
-
-	<meta charset="utf-8"/>
-
-    
-
-	<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
-		<a class="navbar-brand"><img src="acwm_logo.png"></a>
-	</nav>
-
-</head>
-<body>
 <?php
+require('header_login.html');
+session_start();
+
+//if logged in go to home page
+if (isset($_SESSION['userRoles']))
+{
+    header("Location: home.php");
+    exit();
+}
+
 ob_start();
 error_reporting(E_ALL); 
 ini_set('display_errors', 1);
-// require 'header.php'; 
 include 'isdADValidation 5.php';
 include 'db_connection.php'?>
-<!-- <!DOCTYPE html>
-<html>
-    <head>
-        <title>Login user php mysql</title>
-        <link rel="stylesheet" type="text/css" href="style.css">
-    </head>
-<body id="notloggedin"> -->
-<div class = "header">
+<!-- <div id="notloggedin"> -->
+<div class="header">
     <h2 class="text-center">Login</h2> 
 </div>
-<form method = "post" action = "login.php">
+<form method = "post" action = "login.php" class="content">
     <div class="input-group"> 
         <!-- <label>Username</label> -->
             <input type="text" name = "logonName" placeholder = "Username">
@@ -77,14 +46,6 @@ include 'db_connection.php'?>
         </div>
     </div> -->
 </form>
-<?php 
-    session_start();
-    //removing this will break it for some reason
-    if (isset($_SESSION['username'])) {
-        echo $_SESSION['username'];
-    }
-?>
-
 <?php
 // LOGIN USER
 if (isset($_POST['login'])) {
@@ -120,7 +81,7 @@ $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // <== add this l
   FROM acwm.user_roles
   JOIN acwm.application_roles 
   ON acwm.user_roles.ROLE_UID = acwm.application_roles.UID
-  WHERE acwm.application_roles.ROLE_UID = '$username'";
+  WHERE acwm.user_roles.EMPLOYEE_ID = $username";
 
     $stmt = $dbh->query($query);
     $employee_id = $stmt->fetch();
@@ -134,7 +95,7 @@ $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // <== add this l
   ON acwm.application_information.uid = application_roles.APPLICATION_UID
   JOIN acwm.user_roles
   on acwm.user_roles.ROLE_UID = acwm.application_roles.UID
-  WHERE acwm.application_roles.ROLE_UID = '$username'";
+  WHERE acwm.user_roles.EMPLOYEE_ID = $username";
 
 $query3 = 
 "SELECT group_concat(concat(my_intranet_db.tblcarddata.fstrFirstName,' ', my_intranet_db.tblcarddata.fstrLastName) separator ';')
@@ -276,11 +237,14 @@ header("Location: home.php");
 }
 catch(PDOException $e)
 {
-    echo $e->getMessage();
+    // echo $e->getMessage();
+    echo "An unkown error occured. Please contact IT for support.";
 }
 }
 ob_end_flush();
 ?>
+
+<!-- </div> -->
 
 </body>
 </html> 

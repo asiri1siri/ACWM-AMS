@@ -29,9 +29,9 @@ $filename = $_FILES['file']['name'];
 $filename2 = $_FILES['file2']['name'];
 $filename3 = $_FILES['file3']['name'];
 // Location
-$locationFile = 'upload/'.$filename;
-$locationFile2 = 'upload/'.$filename2;
-$locationFile3 = 'upload/'.$filename3;
+$locationFile = 'employeeImages/'.$filename;
+$locationFile2 = 'assetImages/'.$filename2;
+$locationFile3 = 'locationImages/'.$filename3;
 // file extension
 $file_extension = pathinfo($locationFile, PATHINFO_EXTENSION);
 $file_extension = strtolower($file_extension);
@@ -59,7 +59,7 @@ if(in_array($file_extension,$image_ext)){
 							$response2 = $locationFile2;
 								if(move_uploaded_file($_FILES['file3']['tmp_name'],$locationFile3)){
 									$response3 = $locationFile3;
-									$statement->execute(array($response, $response2, $response3, $location, $assignee, $description, $make, $model, $serialNo, $countyNo, $cost, $comments, $status, $category, $binvent, $sublocations, $bureau));
+									$statement->execute(array($response2, $response3, $response, $location, $assignee, $description, $make, $model, $serialNo, $countyNo, $cost, $comments, $status, $category, $binvent, $sublocations, $bureau));
 								}
 						}
 				}

@@ -5,7 +5,10 @@
 </head>
 <body> -->
 <?php
-		include('header.php');
+  require 'redirectToLoginIfNotLoggedIn.php';
+  include('redirectHome_AdminOnly.php');
+  include('header.php');
+  require 'navbar.php';
 ?>
 
 	<br>

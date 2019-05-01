@@ -1,15 +1,17 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
+    <?php 
+      include('redirectToLoginIfNotLoggedIn.php');
+      include('redirectHome_AdminOnly.php');
+      include('header.php'); 
+      include('navbar.php'); 
+    ?>    
     <script type="text/javascript" src="export/libs/FileSaver/FileSaver.min.js"></script>
     <script type="text/javascript" src="export/libs/js-xlsx/xlsx.core.min.js"></script>
-</head> -->
-    <?php 
-      
-        
-include('header.php');
-    ?> 
-<?php 
+</head>
+
+<?php  
   include 'db_connection.php';
  
   $conn = OpenCon();
@@ -21,9 +23,7 @@ include('header.php');
     <div id="alert" class="alert alert-info text-center" style="margin-top:20px; display:none;">
       <button class="close"><span aria-hidden="true">&times;</span></button>
       <span id="alert_message"></span>
-    </div> ';
-    if((isset($_SESSION["username"])) && !(count($_SESSION['userRoles']) == 1 && in_array("MANAGER", $_SESSION["userRoles"]))) {
-      echo '
+    </div> 
     <div class="columns columns-right btn-group float-left">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Actions
@@ -32,19 +32,12 @@ include('header.php');
         <a class="dropdown-item" href="#">Export</a>
         <a class="dropdown-item" href="#">Other</a>
       </div>
-    </div>';
-    }
+    </div>
 
-    echo '
     <table class="responstable" data-toggle="table" data-search="true" data-pagination="true" data-search-align="left" data-show-columns="true">
       <thead>
-        <tr> ';
-
-          if((isset($_SESSION["username"])) && !(count($_SESSION['userRoles']) == 1 && in_array("MANAGER", $_SESSION["userRoles"]))) {
-            echo '<th><em class="fas fa-cog "></em></th> ';
-          }
-
-          echo '
+        <tr>
+          <th><em class="fas fa-cog "></em></th>
           <th data-sortable="true">Location</th>
           <th data-sortable="true">Assignee</th>
           <th data-sortable="true">Description</th>
@@ -70,7 +63,6 @@ include('header.php');
       {
         while ($row = $result->fetch())  // set up a row for each record
         {
-          if((isset($_SESSION["username"])) && !(count($_SESSION['userRoles']) == 1 && in_array("MANAGER", $_SESSION["userRoles"]))) 
            echo'<tr align="center">
             <td>
               <div class="btn-group" role="group">
@@ -126,16 +118,8 @@ include('header.php');
     CloseConn($conn);
 ?>
 
-<!-- <body> -->
-  
+<body>
     
-<?php
-    if (!isset($_SESSION['username']))
-    {
-        header("Location: login.php");
-        exit();
-    } 
-?>
 <script>
  $(document).ready(function()
 {

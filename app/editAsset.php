@@ -9,9 +9,12 @@ $output = array('error' => false);
 	$database = new Connection();
 	$db = $database->open();
 
-		$image = upload_image();
-		$locationImage = upload2_image();
-		$assigneeImage = upload3_image();
+		$assigneeImage = upload_image();
+		$assetImage = upload2_image();
+		$locationImage = upload3_image();
+
+if($assigneeImage != '' && $assetImage != '' &&  $locationImage != ''){
+
 		$statement = $db->prepare(
 			"UPDATE asset SET 
 			LOCATION = :location, 
@@ -28,7 +31,7 @@ $output = array('error' => false);
 			BINVENT = :binvent, 
 			SUBLOCATION = :sublocations, 
 			BUREAU = :bureau, 
-			ASSET_IMAGE = :image,
+			ASSET_IMAGE = :assetImage,
 			LOCATION_IMAGE = :locationImage,
 			ASSIGNEE_IMAGE = :assigneeImage
 			WHERE GUID = :id
@@ -50,55 +53,322 @@ $output = array('error' => false);
 				':binvent'	=>	$_POST["binvent"],
 				':sublocations'	=>	$_POST["sublocations"],
 				':bureau'	=>	$_POST["bureau"],
-				':image' =>	$image,
+				':assetImage' =>	$assetImage,
+				':assigneeImage' =>	$assigneeImage,
 				':locationImage' =>	$locationImage,
+				':id' =>	$_POST["id"]
+			)
+		);
+
+} else if($assigneeImage != '' && $assetImage != '') {
+
+	$statement = $db->prepare(
+			"UPDATE asset SET 
+			LOCATION = :location, 
+			ASSIGNEE = :assignee, 
+			DESCRIPTION = :description, 
+			MAKE = :make, 
+			MODEL = :description, 
+			SERIALNO = :serialNo, 
+			COUNTYNO = :countyNo, 
+			COST = :cost, 
+			COMMENTS = :comments, 
+			STATUS = :status, 
+			CATEGORY = :category, 
+			BINVENT = :binvent, 
+			SUBLOCATION = :sublocations, 
+			BUREAU = :bureau, 
+			ASSET_IMAGE = :assetImage,
+			ASSIGNEE_IMAGE = :assigneeImage
+			WHERE GUID = :id
+			"
+		);
+		$result = $statement->execute(
+			array(
+				':location'	=>	$_POST["location"],
+				':assignee'	=>	$_POST["assignee"],
+				':description'	=>	$_POST["description"],
+				':make'	 =>	$_POST["make"],
+				':model' =>	$_POST["model"],
+				':serialNo'	 =>	$_POST["serialNo"],
+				':countyNo' =>	$_POST["countyNo"],
+				':cost'	=>	$_POST["cost"],
+				':comments'	=>	$_POST["comments"],
+				':status'	=>	$_POST["status"],
+				':category'	=>	$_POST["category"],
+				':binvent'	=>	$_POST["binvent"],
+				':sublocations'	=>	$_POST["sublocations"],
+				':bureau'	=>	$_POST["bureau"],
+				':assetImage' =>	$assetImage,
 				':assigneeImage' =>	$assigneeImage,
 				':id' =>	$_POST["id"]
 			)
 		);
-	// include_once('connection.php');
 
-	// $output = array('error' => false);
+} elseif ($assigneeImage != '' && $locationImage != '') {
 
-	// $database = new Connection();
-	// $db = $database->open();
-	// try{
-	// 	  $id = $_POST['id'];
-	// 	  $location  = $_POST["location"];
-	// 	  $assignee = $_POST["assignee"];
-	// 	  $description = $_POST["description"];
-	// 	  $make  = $_POST["make"];
-	// 	  $model  = $_POST["model"];
-	// 	  $serialNo = $_POST["serialNo"];
-	// 	  $countyNo  = $_POST["countyNo"];
-	// 	  // $acdate    = $_POST["acdate"];
-	// 	  $cost = $_POST["cost"];
-	// 	  $comments  = $_POST["comments"];
-	// 	  $status  = $_POST["status"];
-	// 	  $category    = $_POST["category"];
- //  		  $binvent = $_POST["binvent"];
- //  		  $sublocation    = $_POST["sublocation"];
- //  		  $bureau = $_POST["bureau"];
+	$statement = $db->prepare(
+			"UPDATE asset SET 
+			LOCATION = :location, 
+			ASSIGNEE = :assignee, 
+			DESCRIPTION = :description, 
+			MAKE = :make, 
+			MODEL = :description, 
+			SERIALNO = :serialNo, 
+			COUNTYNO = :countyNo, 
+			COST = :cost, 
+			COMMENTS = :comments, 
+			STATUS = :status, 
+			CATEGORY = :category, 
+			BINVENT = :binvent, 
+			SUBLOCATION = :sublocations, 
+			BUREAU = :bureau, 
+			LOCATION_IMAGE = :locationImage,
+			ASSIGNEE_IMAGE = :assigneeImage
+			WHERE GUID = :id
+			"
+		);
+		$result = $statement->execute(
+			array(
+				':location'	=>	$_POST["location"],
+				':assignee'	=>	$_POST["assignee"],
+				':description'	=>	$_POST["description"],
+				':make'	 =>	$_POST["make"],
+				':model' =>	$_POST["model"],
+				':serialNo'	 =>	$_POST["serialNo"],
+				':countyNo' =>	$_POST["countyNo"],
+				':cost'	=>	$_POST["cost"],
+				':comments'	=>	$_POST["comments"],
+				':status'	=>	$_POST["status"],
+				':category'	=>	$_POST["category"],
+				':binvent'	=>	$_POST["binvent"],
+				':sublocations'	=>	$_POST["sublocations"],
+				':bureau'	=>	$_POST["bureau"],
+				':assigneeImage' =>	$assigneeImage,
+				':locationImage' =>	$locationImage,
+				':id' =>	$_POST["id"]
+			)
+		);
+	
+} else if ($assetImage != '' && $locationImage != ''){
+	$statement = $db->prepare(
+			"UPDATE asset SET 
+			LOCATION = :location, 
+			ASSIGNEE = :assignee, 
+			DESCRIPTION = :description, 
+			MAKE = :make, 
+			MODEL = :description, 
+			SERIALNO = :serialNo, 
+			COUNTYNO = :countyNo, 
+			COST = :cost, 
+			COMMENTS = :comments, 
+			STATUS = :status, 
+			CATEGORY = :category, 
+			BINVENT = :binvent, 
+			SUBLOCATION = :sublocations, 
+			BUREAU = :bureau, 
+			ASSET_IMAGE = :assetImage,
+			LOCATION_IMAGE = :locationImage
+			WHERE GUID = :id
+			"
+		);
+		$result = $statement->execute(
+			array(
+				':location'	=>	$_POST["location"],
+				':assignee'	=>	$_POST["assignee"],
+				':description'	=>	$_POST["description"],
+				':make'	 =>	$_POST["make"],
+				':model' =>	$_POST["model"],
+				':serialNo'	 =>	$_POST["serialNo"],
+				':countyNo' =>	$_POST["countyNo"],
+				':cost'	=>	$_POST["cost"],
+				':comments'	=>	$_POST["comments"],
+				':status'	=>	$_POST["status"],
+				':category'	=>	$_POST["category"],
+				':binvent'	=>	$_POST["binvent"],
+				':sublocations'	=>	$_POST["sublocations"],
+				':bureau'	=>	$_POST["bureau"],
+				':assetImage' =>	$assetImage,
+				':locationImage' =>	$locationImage,
+				':id' =>	$_POST["id"]
+			)
+		);
 
-	// 	$sql = " UPDATE ASSET SET LOCATION = '$location', ASSIGNEE = '$assignee', DESCRIPTION = '$description', MAKE = '$make', MODEL = '$model', SERIALNO = '$serialNo', COUNTYNO = '$countyNo', COST = '$cost', COMMENTS = '$comments', STATUS = '$status', CATEGORY = '$category', BINVENT = '$binvent', SUBLOCATION = '$sublocation', BUREAU = '$bureau' WHERE GUID = '$id' ";
-	// 	//if-else statement in executing our query
-	// 	if($db->exec($sql)){
-	// 		$output['message'] = 'Asset updated successfully';
-	// 	} 
-	// 	else{
-	// 		$output['error'] = true;
-	// 		$output['message'] = 'Something went wrong. Cannot update Asset';
-	// 	}
+} else if ($assigneeImage != '') {
 
-	// }
-	// catch(PDOException $e){
-	// 	$output['error'] = true;
-	// 	$output['message'] = $e->getMessage();
-	// }
+	$statement = $db->prepare(
+			"UPDATE asset SET 
+			LOCATION = :location, 
+			ASSIGNEE = :assignee, 
+			DESCRIPTION = :description, 
+			MAKE = :make, 
+			MODEL = :description, 
+			SERIALNO = :serialNo, 
+			COUNTYNO = :countyNo, 
+			COST = :cost, 
+			COMMENTS = :comments, 
+			STATUS = :status, 
+			CATEGORY = :category, 
+			BINVENT = :binvent, 
+			SUBLOCATION = :sublocations, 
+			BUREAU = :bureau, 
+			ASSIGNEE_IMAGE = :assigneeImage
+			WHERE GUID = :id
+			"
+		);
+		$result = $statement->execute(
+			array(
+				':location'	=>	$_POST["location"],
+				':assignee'	=>	$_POST["assignee"],
+				':description'	=>	$_POST["description"],
+				':make'	 =>	$_POST["make"],
+				':model' =>	$_POST["model"],
+				':serialNo'	 =>	$_POST["serialNo"],
+				':countyNo' =>	$_POST["countyNo"],
+				':cost'	=>	$_POST["cost"],
+				':comments'	=>	$_POST["comments"],
+				':status'	=>	$_POST["status"],
+				':category'	=>	$_POST["category"],
+				':binvent'	=>	$_POST["binvent"],
+				':sublocations'	=>	$_POST["sublocations"],
+				':bureau'	=>	$_POST["bureau"],
+				':assigneeImage' =>	$assigneeImage,
+				':id' =>	$_POST["id"]
+			)
+		);
 
-	// //close connection
-	// $database->close();
+} else if ($assetImage != '') {
 
-	// echo json_encode($output);
+	 $statement = $db->prepare(
+			"UPDATE asset SET 
+			LOCATION = :location, 
+			ASSIGNEE = :assignee, 
+			DESCRIPTION = :description, 
+			MAKE = :make, 
+			MODEL = :description, 
+			SERIALNO = :serialNo, 
+			COUNTYNO = :countyNo, 
+			COST = :cost, 
+			COMMENTS = :comments, 
+			STATUS = :status, 
+			CATEGORY = :category, 
+			BINVENT = :binvent, 
+			SUBLOCATION = :sublocations, 
+			BUREAU = :bureau, 
+			ASSET_IMAGE = :assetImage
+			WHERE GUID = :id
+			"
+		);
+		$result = $statement->execute(
+			array(
+				':location'	=>	$_POST["location"],
+				':assignee'	=>	$_POST["assignee"],
+				':description'	=>	$_POST["description"],
+				':make'	 =>	$_POST["make"],
+				':model' =>	$_POST["model"],
+				':serialNo'	 =>	$_POST["serialNo"],
+				':countyNo' =>	$_POST["countyNo"],
+				':cost'	=>	$_POST["cost"],
+				':comments'	=>	$_POST["comments"],
+				':status'	=>	$_POST["status"],
+				':category'	=>	$_POST["category"],
+				':binvent'	=>	$_POST["binvent"],
+				':sublocations'	=>	$_POST["sublocations"],
+				':bureau'	=>	$_POST["bureau"],
+				':assetImage' =>	$assetImage,
+				':id' =>	$_POST["id"]
+			)
+		);
+
+} elseif ($locationImage != '') {
+
+	$statement = $db->prepare(
+			"UPDATE asset SET 
+			LOCATION = :location, 
+			ASSIGNEE = :assignee, 
+			DESCRIPTION = :description, 
+			MAKE = :make, 
+			MODEL = :description, 
+			SERIALNO = :serialNo, 
+			COUNTYNO = :countyNo, 
+			COST = :cost, 
+			COMMENTS = :comments, 
+			STATUS = :status, 
+			CATEGORY = :category, 
+			BINVENT = :binvent, 
+			SUBLOCATION = :sublocations, 
+			BUREAU = :bureau, 
+			LOCATION_IMAGE = :locationImage
+			WHERE GUID = :id
+			"
+		);
+		$result = $statement->execute(
+			array(
+				':location'	=>	$_POST["location"],
+				':assignee'	=>	$_POST["assignee"],
+				':description'	=>	$_POST["description"],
+				':make'	 =>	$_POST["make"],
+				':model' =>	$_POST["model"],
+				':serialNo'	 =>	$_POST["serialNo"],
+				':countyNo' =>	$_POST["countyNo"],
+				':cost'	=>	$_POST["cost"],
+				':comments'	=>	$_POST["comments"],
+				':status'	=>	$_POST["status"],
+				':category'	=>	$_POST["category"],
+				':binvent'	=>	$_POST["binvent"],
+				':sublocations'	=>	$_POST["sublocations"],
+				':bureau'	=>	$_POST["bureau"],
+				':locationImage' =>	$locationImage,
+				':id' =>	$_POST["id"]
+			)
+		);
+
+} else {
+
+			$statement = $db->prepare(
+			"UPDATE asset SET 
+			LOCATION = :location, 
+			ASSIGNEE = :assignee, 
+			DESCRIPTION = :description, 
+			MAKE = :make, 
+			MODEL = :description, 
+			SERIALNO = :serialNo, 
+			COUNTYNO = :countyNo, 
+			COST = :cost, 
+			COMMENTS = :comments, 
+			STATUS = :status, 
+			CATEGORY = :category, 
+			BINVENT = :binvent, 
+			SUBLOCATION = :sublocations, 
+			BUREAU = :bureau 
+			WHERE GUID = :id
+			"
+		);
+		$result = $statement->execute(
+			array(
+				':location'	=>	$_POST["location"],
+				':assignee'	=>	$_POST["assignee"],
+				':description'	=>	$_POST["description"],
+				':make'	 =>	$_POST["make"],
+				':model' =>	$_POST["model"],
+				':serialNo'	 =>	$_POST["serialNo"],
+				':countyNo' =>	$_POST["countyNo"],
+				':cost'	=>	$_POST["cost"],
+				':comments'	=>	$_POST["comments"],
+				':status'	=>	$_POST["status"],
+				':category'	=>	$_POST["category"],
+				':binvent'	=>	$_POST["binvent"],
+				':sublocations'	=>	$_POST["sublocations"],
+				':bureau'	=>	$_POST["bureau"],
+				':id' =>	$_POST["id"]
+			)
+		);
+
+
+}
+
+		$database->close();
+	
+
 	
 ?>

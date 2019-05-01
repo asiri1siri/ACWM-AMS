@@ -3,9 +3,13 @@ var $button = $('#theButton');
 var $assetTable = $('#myAssetTable');
 var $assetButton = $('#theButtonAsset');
 
+var $computerTable = $('#myComputerAssets');
+var $computerButton = $('#theComputerButton');
+
 $(document).ready(function(){
     $('#sublocation').hide();
 
+    //vehicles
     $table.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', function(){
         $button.prop('disabled', !$table.bootstrapTable('getSelections').length)
     });
@@ -37,6 +41,7 @@ $(document).ready(function(){
         });
     });
 
+    //assets
     $assetTable.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', function(){
         $assetButton.prop('disabled', !$assetTable.bootstrapTable('getSelections').length)
     });
@@ -70,8 +75,40 @@ $(document).ready(function(){
                 $('#alert').show();
                 $('#alert_message').html(response.message);
                 $('#moveAsset').modal('hide');
-                location.reload();
+                // location.reload();
             }
         });
+    });
+
+    //computers
+    $computerTable.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', function(){
+        $computerButton.prop('disabled', !$computerTable.bootstrapTable('getSelections').length)
+    });
+
+    $computerButton.click(function(e){
+        $('#moveComputer').modal('show');
+        $('#computerGuids').val($.map(
+            $computerTable.bootstrapTable('getSelections'), function(row){
+                return row.GUID;
+            }
+        ));
+        $('#computerMapLocation').val('map_location');
+    });
+
+    $('#moveComputerForm').submit(function(e){
+        e.preventDefault();
+        var moveComputerObject = $(this).serialize();
+        $.ajax({
+            method: 'POST',
+            url: 'moveComputer.php',
+            data: moveComputerObject,
+            dataType: 'json',
+            success: function(response){
+                $('#alert').show();
+                $('#alert_message').html(response.message);
+                $('#moveComputer').modal('hide');
+                location.reload();
+            }
+        })
     });
 });

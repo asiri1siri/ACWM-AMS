@@ -1,11 +1,11 @@
-<!-- <!DOCTYPE html>
-<html>
-<head>
-  </head> -->
 
 
  <?php  
-      include('header.php');
+  
+ include('redirectToLoginIfNotLoggedIn.php');
+ include('redirectHome_AdminOnly.php');
+ include('header.php');
+ include('navbar.php'); 
   include 'db_connection.php';
   $table = "vehicle";      
   $conn = OpenCon();
@@ -28,45 +28,42 @@ echo '
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <a id="addnew" class="dropdown-item btn btn-success">Add Vehicle</a>
         <div id="toolbar"><a id="theButton" class="dropdown-item btn btn-success">Move Selected Items</a></div>
-        <li class="nav-item dropdown">
-                  <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Export</a>
-                    <ul class="dropdown-menu">
-                    <li><a href="#" class="dropdown-item btn btn-success" onclick="doExport()">Export to Excel</a></li>
-                    <li><a href="#" class="dropdown-item btn btn-success" onclick="doExportCSV()">Export to CSV</a></li>
-                    <li><a href="#" class="dropdown-item btn btn-success" onclick="doExportPDF()">Export to PDF</a></li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
+        <div id="toolbar2">
+                      <select class="form-control">
+                        <option value="">Export</option>
+                        <option value="all">Export All</option>
+                        <option value="selected">Export Select</option>
+                    </select>
+                    </div>
       </div>
       </div>';
   }
 echo '
-  <table id="myVehiclesTable" class="responstable" data-toggle="table" data-search="true" data-advanced-search="true" data-id-table="advancedTable" data-pagination="true" data-search-align="left" data-show-columns="true" data-click-to-select="true">
+<table id="myVehiclesTable" class="responstable" data-toggle="table" data-search="true" data-pagination="true" data-search-align="left" data-show-columns="true" data-click-to-select="true" data-trim-on-search="false" data-multiple-search="true" data-show-export="true" data-toolbar="#toolbar2">
   <thead>
     <tr>';
     
-      echo '<th><em id="em" class="fa fa-cog"></em></th>';
+      echo '<th data-searchable="false"><em id="em" class="fa fa-cog"></em></th>';
     
       if((isset($_SESSION["username"])) && !(count($_SESSION['userRoles']) == 1 && in_array("MANAGER", $_SESSION["userRoles"]))) {
         echo '
-        <th data-checkbox="true"></th>';
+        <th data-checkbox="true" data-searchable="false"></th>';
       }
 
       echo '
-      <th>Vehicle Image</th>
+      <th class="d-none" >Vehicle Image</th>
       <th data-field="VNO" data-sortable="true"">VNO</th>
+      <th class="d-none" >Employee Image</th>
       <th data-field="ASSIGNEDTO" data-sortable="true">Assigned To</th>
-      <th>Employee Image</th>
-      <th class="d-none"  data-field="LICENSE" data-sortable="true">License</th>
-      <th class="d-none"  data-field="MAKE" data-sortable="true">Make</th>
-      <th class="d-none"  data-field="MODEL" data-sortable="true">Model</th>
-      <th class="d-none"  data-field="YEAR" data-sortable="true">Year</th>
+      <th data-field="LICENSE" data-sortable="true">License</th>
+      <th data-field="MAKE" data-sortable="true">Make</th>
+      <th data-field="MODEL" data-sortable="true">Model</th>
+      <th data-field="YEAR" data-sortable="true">Year</th>
+      <th class="d-none" >Housed Image</th>
       <th data-field="HOUSED" data-sortable="true">Housed</th>
-      <th>Housed Image</th>
-      <th class="d-none"  data-field="VIN" data-sortable="true">VIN</th>
+      <th data-field="VIN" data-sortable="true">VIN</th>
       <th data-field="UNIT" data-sortable="true">Unit</th>
-      <th class="d-none" data-field="DESCRIPTION" data-sortable="true">Description</th>
+      <th data-field="DESCRIPTION" data-sortable="true">Description</th>
       <th data-field="BUREAU" data-sortable="true">Bureau</th>
       <th data-field="FUNDINGORG" data-sortable="true">Funding Org</th>
     </tr>
@@ -100,24 +97,33 @@ echo '
             echo '
                 <a class="info-btn">
                   <button class="btn btn-success btn-sm info" data-id="'.$row["GUID"].'">
-                  <i class="fas fa-info-circle"></i></button>
+                  <i class="fa fa-image"></i></button>
                 </a>
+
+                <input type="hidden" class="theCurrentTable" name="theCurrentTable" value="'.$table.'" />
+                <a class="history-btn">
+                  <button class="btn btn-secondary btn-sm history" data-id="'.$row["GUID"].'">
+                  <i class="fas fa-history"></i></button>
+                </a>
+
               </div>
             </td>';
             
           if((isset($_SESSION["username"])) && !(count($_SESSION['userRoles']) == 1 && in_array("MANAGER", $_SESSION["userRoles"]))) {
             echo        "<td></td>";  
           }
+         
+          
           echo '<td><img src="'.$row['VEHICLE_IMAGE'].'" width="110" height="75"></td>';                        
           echo        "<td>" . $row['VNO'] . "</td>";
-          echo        "<td>" . $row['ASSIGNEDTO'] . "</td>";
-          echo '<td><img  src="'.$row['EMPLOYEE_IMAGE'].'" width="110" height="75"></td>';  
+          echo '<td><img  src="'.$row['EMPLOYEE_IMAGE'].'" width="110" height="75"></td>'; 
+          echo        "<td>" . $row['ASSIGNEDTO'] . "</td>"; 
           echo        "<td>" . $row['LICENSE'] . "</td>";
           echo        "<td>" . $row['MAKE'] . "</td>";
           echo        "<td>" . $row['MODEL'] . "</td>";
           echo        "<td>" . $row['YEAR'] . "</td>";
-          echo        "<td>" . $row['HOUSED'] . "</td>";
           echo '<td><img  src="'.$row['LOCATION_IMAGE'].'" width="110" height="75"></td>';  
+          echo        "<td>" . $row['HOUSED'] . "</td>";
           echo        "<td>" . $row['VIN'] . "</td>";
           echo        "<td>" . $row['UNIT'] . "</td>";
           echo        "<td>" . $row['DESCRIPTION'] . "</td>";
@@ -148,8 +154,8 @@ echo '
 
     CloseConn($conn);
 ?>
-<!-- 
-<body> -->
+
+<body>
 
 <!-- Add/Edit Vehicle  -->
 <?php include("modalVehicle.php")?> 
@@ -161,13 +167,15 @@ echo '
 
 
 <!-- BootStrap Advance Search-->
-<script type="text/javascript">
+<!-- <script type="text/javascript">
         $(document).ready(function () {
 
           $('#myVehiclesTable').bootstrapTable()
         });
-</script>
+</script> -->
 
+<!-- History -->
+<?php include("modalHistory.html")?>
 
 <!-- Single-Line Advance Search-->
 <!-- <script src="RESOURCES/myAdvanceSearch/js/jquery-3.3.1.min.js" type="text/javascript"></script>
@@ -178,7 +186,21 @@ echo '
         });
     </script> -->
 
-<script type="text/javaScript">
+<!-- New Export Function much more cleaner-->
+<script>
+  var $table = $('#myVehiclesTable')
+  $(document).ready(function () {
+  $(function() {
+    $('#toolbar2').find('select').change(function () {
+      $table.bootstrapTable('destroy').bootstrapTable({
+        exportDataType: $(this).val(),
+        exportTypes: ['csv', 'sql', 'excel', 'pdf']
+      })
+    }).trigger('change')
+  })
+});
+</script>
+<!-- <script type="text/javaScript">
 function doExport() {
      
         $('#myVehiclesTable').tableExport({
@@ -224,7 +246,10 @@ function doExportPDF(){
 
   return false;
 });
-    </script>
+    </script> -->
 
 </body>
 </html>
+
+
+

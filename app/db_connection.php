@@ -17,7 +17,8 @@ function OpenCon()
  }
  catch (PDOException $e)
  {
-     echo "Connection failed: " . $e->getMessage();
+    //  echo "Connection failed: " . $e->getMessage();
+    echo "There was an unknown error. Please contact IT.";
  }
 }
  

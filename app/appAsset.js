@@ -27,6 +27,9 @@ $(document).ready(function()
                 var binvent = $('#binvent').val();
                 var sublocations = $('#sublocations').val();
                 var bureau = $('#bureau').val();
+                
+                var tableHistory = $('#tableHistory').val();
+                var userWhoUpdated = $('#userWhoUpdated').val();
            
 
                 fd.append('file',files);
@@ -48,6 +51,8 @@ $(document).ready(function()
                 fd.append('bureau', bureau);
              
 
+                fd.append('tableHistory', tableHistory);
+                fd.append('userWhoUpdated', userWhoUpdated);
                 fd.append('request',1);
 
                 // AJAX request
@@ -62,46 +67,24 @@ $(document).ready(function()
                         if(response != 0){
                             // Show image preview
                             $('#preview').append("<img src='"+response+"' width='100' height='100' style='display: inline-block;'>");
-                              
+                            
+                            $.ajax({
+                              method: 'POST',
+                              url: 'addToHistory_Add.php',
+                              data: fd,
+                              contentType:false,
+                              processData: false
+                            });
+                              myFunction()
                         }else{
                             alert('file not uploaded');
                         }
-                        myFunction()
+                        // myFunction()
                     }
                 });
             });
 //
 
-  // $('#addForm').submit(function(e)
-  // {
-  //   e.preventDefault();
-  //   var addform = $(this).serialize();
-  //   //console.log(addform);
-  //   $.ajax(
-  //   {
-  //     method: 'POST',
-  //     url: 'addAsset.php',
-  //     data: addform,
-  //     dataType: 'json',
-  //     success: function(response)
-  //     {
-  //       $('#add').modal('hide');
-  //       if(response.error)
-  //       {
-  //         alert('error');
-  //         $('#alert').show();
-  //         $('#alert_message').html(response.message);
-  //       }
-  //       else
-  //       {
-  //         $('#alert').show();
-  //         $('#alert_message').html(response.message);
-  //          myFunction();
-
-  //       }
-  //     }
-  //   });
-  // });
 
 
   //edit
@@ -115,12 +98,14 @@ $(document).ready(function()
 
     $('#editForm').submit(function(e){
     e.preventDefault();
-    var editform = $(this).serialize();
+    // var editform = $(this).serialize();
+
+    var fd = new FormData(this);
 
     $.ajax({
       method: 'POST',
       url: 'editAsset.php',
-      data:new FormData(this),
+      data:fd,
     contentType:false,
     processData:false,
       success:function(response){
@@ -131,6 +116,14 @@ $(document).ready(function()
                  //alert("error")
                 alert('file not uploaded');
                }else{
+    
+                $.ajax({
+                  method: 'POST',
+                  url: 'addToHistory.php',
+                  data: fd,
+                  contentType:false,
+                  processData: false
+                });
                 
                      $('#edit').modal('hide');
                      
@@ -144,35 +137,6 @@ $(document).ready(function()
     });
   });
 
-  // $('#editForm').submit(function(e)
-  // {
-  //   e.preventDefault();
-  //   var editform = $(this).serialize();
-
-  //   $.ajax(
-  //   {
-  //     method: 'POST',
-  //     url: 'editAsset.php',
-  //     data: editform,
-  //     dataType: 'json',
-  //     success: function(response)
-  //     {  
-  //       if(response.error)
-  //       {
-  //         $('#alert').show();
-  //         $('#alert_message').html(response.message);
-  //       }
-  //       else
-  //       {
-  //         $('#alert').show();
-  //         $('#alert_message').html(response.message);
-  //         myFunction();
-  //       }
-
-  //       $('#edit').modal('hide');
-  //     }
-  //   });
-  // });
 
 // Additional Asset Info
    $(document).on('click', '.info', function()
@@ -220,7 +184,25 @@ $(document).ready(function()
     });
 
   });
+  //history info
+  $(document).on('click', '.history', function(){
+    var id = $(this).data('id');
+    var theCurrentTable = $('.theCurrentTable').val();
 
+    $.ajax({
+      method: 'POST',
+      url: 'modalHistory.php',
+      data: {id: id, theCurrentTable: theCurrentTable},
+      dataType: 'json',
+      success: function(response){
+        if(!response.error){
+
+          $('#modalHistoryBody').html(response.tableData);
+          $('#modalHistory').modal('show');
+        }
+      }
+    })
+  });
 }); // end function
 
 function getDetails(id){
@@ -252,9 +234,9 @@ function getDetails(id){
         $('.binvent').val(response.data.BINVENT);
         $('.sublocations').val(response.data.SUBLOCATION);
         $('.bureau').val(response.data.BUREAU);
-        $('#asset_image').html(response.data.ASSET_IMAGE);
-        $('#location_image').html(response.data.LOCATION_IMAGE);
-        $('#assignee_image').html(response.data.ASSIGNEE_IMAGE);
+        $('#asset_image').html('<img src='+response.data.ASSET_IMAGE+' width="110" height="75">');
+        $('#location_image').html('<img src='+response.data.LOCATION_IMAGE+' width="110" height="75">');
+        $('#assignee_image').html('<img src='+response.data.ASSIGNEE_IMAGE+' width="110" height="75">');
       }
     }
   });
@@ -275,14 +257,9 @@ function getInfo(id){
       }
       else{
         $('.id').val(response.data.GUID);
-        $('#descriptionInfo').html(response.data.DESCRIPTION);
-        $('#makeInfo').html(response.data.MAKE);
-        $('#modelInfo').html(response.data.MODEL);
-        $('#serialInfo').html(response.data.SERIALNO);
-        $('#countyInfo').html(response.data.COUNTYNO);
-        $('#dateInfo').html(response.data.ACDATE);
-        $('#commentsInfo').html(response.data.COMMENTS);
-        $('#categoryInfo').html(response.data.CATEGORY);
+        $('#asset_imageInfo').html('<img src='+response.data.ASSET_IMAGE+' width="110" height="75">');
+        $('#location_imageInfo').html('<img src='+response.data.LOCATION_IMAGE+' width="110" height="75">');
+        $('#assignee_imageInfo').html('<img src='+response.data.ASSIGNEE_IMAGE+' width="110" height="75">');
       
       }
     }

@@ -28,7 +28,7 @@
 
 <!-- Add New -->
 <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header text-center">
 				<h4 class="modal-title w-100 font-weight-bold">Add New Vehicle</h4>
@@ -39,6 +39,8 @@
 				<div class="container-fluid">
 				<form method='post' action='' enctype="multipart/form-data">
 					<input type="hidden" class="id" name="id">
+					<input type="hidden" name="tableHistory" id="tableHistory" value="<?php echo $table ?>"> <!-- added -->
+					<input type="hidden" name="userWhoUpdated" id="userWhoUpdated" value="<?php echo $_SESSION['username'] ?>"> <!-- added -->
 					<div class="form-row">
 						<div class="form-group col-md-6">
 							<label class="control-label">VNO:</label>
@@ -75,12 +77,6 @@
 	                                ?>
                                 </select>
                           </div>
-
-					
-						<!-- <div class="form-group col-md-6">
-							<label class="control-label">Year:</label>
-							<input type="text" class="form-control" name="year" id="year">
-						</div> -->
 					
 
 					   <div class="form-group col-md-6">
@@ -93,10 +89,7 @@
 	                                ?>
                                  </select>
                          </div>
-						<!-- <div class="form-group col-md-6">
-							<label class="control-label">Housed:</label>
-							<input type="text" class="form-control" name="housed" id="housed">
-						</div> -->
+						
 					
 						<div class="form-group col-md-6">
 							<label class="control-label">VIN:</label>
@@ -115,11 +108,6 @@
 	                                ?>
                                  </select>
                          </div>
-					
-						<!-- <div class="form-group col-md-6">
-							<label class="control-label">Unit:</label>
-							<input type="text" class="form-control" name="unit" id="unit">
-						</div> -->
 
 
 						<div class="form-group col-md-6">
@@ -137,12 +125,7 @@
 	                                ?>
                                 </select>
                           </div>
-						<!-- <div class="form-group col-md-6">
-							<label class="control-label">Bureau:</label>
-							<input type="text" class="form-control" name="bureau" id="bureau">
-						</div>
-					 -->
-
+					
 
 					   <div class="form-group col-md-6">
                                 <label>Funding Org:</label>
@@ -156,22 +139,20 @@
                                 </select>
                           </div>
 
-					<!-- 	<div class="form-group col-md-6">
-							<label class="control-label">Funding Org:</label>
-							<input type="text" class="form-control" name="funding" id="funding">
-						</div> -->
+					
+					   <div class="form-group col-md-6">
+							<label class="control-label">Employee Image:</label>
+							<input type='file' name='file' id='file'>
+						</div>
 
-						<div class="form-group col-md-6.5">
+
+						<div class="form-group col-md-6">
 							<label class="control-label">Vehicle Image:</label>
 							<input type='file' name='file2' id='file2'>
 						</div>
 
-						<div class="form-group col-md-5">
-							<label class="control-label">Assigned To  Image:</label>
-							<input type='file' name='file' id='file'>
-						</div>
-
-						<div class="form-group col-md-6.5">
+					
+						<div class="form-group col-md-6">
 							<label class="control-label">Location Image:</label>
 							<input type='file' name='file3' id='file3'>
 						</div>
@@ -194,7 +175,7 @@
 
 <!-- Edit -->
 <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header text-center">
               	<h4 class="modal-title w-100 font-weight-bold">Edit Vehicle</h4>
@@ -204,6 +185,8 @@
 				<div class="container-fluid">
 				<form method="post" id="editForm" enctype="multipart/form-data">
 					<input type="hidden" class="id" name="id">
+					<input type="hidden" name="tableHistory" id="tableHistory" value="<?php echo $table ?>"> <!-- added -->
+					<input type="hidden" name="userWhoUpdated" id="userWhoUpdated" value="<?php echo $_SESSION['username'] ?>"> <!-- added -->
 					<div class="form-row">
 						<div class="form-group col-md-6">
 							<label class="control-label">VNO:</label>
@@ -242,10 +225,6 @@
                                 </select>
                           </div>
 		
-						<!-- <div class="form-group col-md-6">
-							<label class="control-label">Year:</label>
-							<input type="text" class="form-control year" name="year" id="year">
-						</div> -->
 
 						<div class="form-group col-md-6">
                                 <label>Housed:</label>
@@ -258,10 +237,6 @@
                                 </select>
                           </div>
 
-						<!-- <div class="form-group col-md-6">
-							<label class="control-label">Housed:</label>
-							<input type="text" class="form-control housed" name="housed" id="housed">
-						</div> -->
 		
 						<div class="form-group col-md-6">
 							<label class="control-label">VIN:</label>
@@ -280,11 +255,6 @@
                                  </select>
                           </div>
 		
-						<!-- <div class="form-group col-md-6">
-							<label class="control-label">Unit:</label>
-							<input type="text" class="form-control unit" name="unit" id="unit">
-						</div> -->
-
 		
 						<div class="form-group col-md-6">
 							<label class="control-label">Description:</label>
@@ -301,11 +271,7 @@
 	                                ?>
                                 </select>
                           </div>
-		<!-- 
-						<div class="form-group col-md-6">
-							<label class="control-label">Bureau:</label>
-							<input type="text" class="form-control bureau" name="bureau" id="bureau">
-						</div> -->
+	
 
 						 <div class="form-group col-md-6">
                                     <label>Funding Org:</label>
@@ -319,29 +285,28 @@
                                 ?>
                                   </select>
                           </div>
-		
-					<!-- 	<div class="form-group col-md-6">
-							<label class="control-label">Funding Org:</label>
-							<input type="text" class="form-control funding" name="funding" id="funding">
+					
+
+					   <div class="form-group col-md-6">
+							<label class="control-label">Employee Image:</label>
+							<input type='file' name='file' id='file' >
+							<div id='employee_uploaded_image'></div>
+							<!-- <span id="employee_uploaded_image"></span> -->
 						</div>
- -->
- 					
-						<div class="form-group col-md-6.5">
+						
+						<div class="form-group col-md-6">
 							<label class="control-label">Vehicle Image:</label>
-							<input type='file' name='file2' id='file2'>
-							<span id="vehicle_uploaded_image"></span>
+							<input type='file' name='file2' id='file2' >
+							<!-- <span id="vehicle_uploaded_image"></span> -->
+							<div id='vehicle_uploaded_image'></div>
 						</div>
 
-						<div class="form-group col-md-5">
-							<label class="control-label">Assigned To  Image:</label>
-							<input type='file' name='file' id='file'>
-							<span id="employee_uploaded_image"></span>
-						</div>
 
-						<div class="form-group col-md-6.5">
+						<div class="form-group col-md-6">
 							<label class="control-label">Location Image:</label>
-							<input type='file' name='file3' id='file3'>
-							<span id="location_uploaded_image"></span>
+							<input type='file' name='file3' id='file3' >
+							<div id='location_uploaded_image'></div>
+							<!-- <span id="location_uploaded_image"></span> -->
 						</div>
 
 						
@@ -352,6 +317,7 @@
 					<button type="button" class="btn btn-default" data-dismiss="modal"> Cancel</button>
 					<button type="submit" class="btn btn-success">Update </buton>
 				</form>
+			<!-- <div id='preview'></div> -->
 				</div>
 			</div>
 		</div>
@@ -419,40 +385,25 @@
 					<input type="hidden" class="id" name="id">
 					<div class="form-row">
 
+					 <div class="form-group col-md-6">
+							<label class="control-label">Employee Image:</label>
+							
+							<div id='employee_image'></div>
+							
+						</div>
+						
 						<div class="form-group col-md-6">
-							<label class="control-label">License:</label>
-								<span id="licenseInfo"></span>
-				
+							<label class="control-label">Vehicle Image:</label>
+							
+							<div id='vehicle_image'></div>
 						</div>
 
-						<div class="form-group col-md-6">
-							<label class="control-label">Make:</label>
-								<span id="makeInfo"></span>
-				
-						</div>
 
 						<div class="form-group col-md-6">
-							<label class="control-label">Model:</label>
-								<span id="modelInfo"></span>
-				
-						</div>
-
-						<div class="form-group col-md-6">
-							<label class="control-label">Year:</label>
-								<span id="yearInfo"></span>
-				
-						</div>
-
-						<div class="form-group col-md-6">
-							<label class="control-label">VIN:</label>
-								<span id="vinInfo"></span>
-				
-						</div>
-
-						<div class="form-group col-md-6">
-							<label class="control-label">Description:</label>
-								<span id="descriptionInfo"></span>
-				
+							<label class="control-label">Location Image:</label>
+					
+							<div id='location_image'></div>
+							
 						</div>
 					
 					</div>

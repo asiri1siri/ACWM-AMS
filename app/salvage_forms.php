@@ -1,18 +1,14 @@
-
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-</head> -->
-
-
-<?php
-        require('header.php');
-        if((count($_SESSION['userRoles']) == 1 && in_array("MANAGER", $_SESSION["userRoles"]))) {
-            echo '<h1 style="text-align: center">Sorry, you do not have permission to view this page.</h1></body></html>';
-        }
-        else {
-?>
-<!-- <body> -->
+    <?php 
+      include('redirectToLoginIfNotLoggedIn.php');
+      include('redirectHome_AdminOnly.php');
+      include('header.php'); 
+      include('navbar.php'); 
+    ?>
+</head>
+<body>
 
     <br>
         <h1><center>Salvage Forms<center></h1>
@@ -40,4 +36,3 @@
 
 </body>
 </html>
-        <?php } ?>

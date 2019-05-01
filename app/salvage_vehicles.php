@@ -1,13 +1,17 @@
-
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-  
+  <?php 
+      include('redirectToLoginIfNotLoggedIn.php');
+      include('redirectHome_AdminOnly.php');
+      include('header.php'); 
+      include('navbar.php'); 
+  ?>
   <script type="text/javascript" src="export/libs/FileSaver/FileSaver.min.js"></script>
   <script type="text/javascript" src="export/libs/js-xlsx/xlsx.core.min.js"></script>
-</head> -->
- <?php
-      include('header.php');
+</head>
+
+ <?php  
   include 'db_connection.php';
         
   $conn = OpenCon();
@@ -19,30 +23,21 @@ echo '
   <div id="alert" class="alert alert-info text-center" style="margin-top:20px; display:none;">
     <button class="close"><span aria-hidden="true">&times;</span></button>
     <span id="alert_message"></span>
-  </div> ';
-    if((isset($_SESSION["username"])) && !(count($_SESSION['userRoles']) == 1 && in_array("MANAGER", $_SESSION["userRoles"]))) {
-      echo '
-      <div class="columns columns-right btn-group float-left">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Actions
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Export</a>
-          <a class="dropdown-item" href="#">Other</a>
-        </div>
-      </div>';
-    }
+  </div> 
+  <div class="columns columns-right btn-group float-left">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Actions
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+      <a class="dropdown-item" href="#">Export</a>
+      <a class="dropdown-item" href="#">Other</a>
+    </div>
+  </div>
 
-    echo '
       <table class="responstable" data-toggle="table" data-search="true" data-pagination="true" data-search-align="left" data-show-columns="true">
         <thead>
-          <tr> ';
-
-            if((isset($_SESSION["username"])) && !(count($_SESSION['userRoles']) == 1 && in_array("MANAGER", $_SESSION["userRoles"]))) {
-              echo '<th><em class="fa fa-cog"></em></th>';
-            }
-
-          echo '
+          <tr>
+            <th><em class="fa fa-cog"></em></th>
             <th data-sortable="true">VNO</th>
             <th data-sortable="true">Assigned To</th>
             <th data-sortable="true">License</th>
@@ -65,21 +60,20 @@ echo '
         {
           while ($row = $result->fetch())
         {
-          if((isset($_SESSION["username"])) && !(count($_SESSION['userRoles']) == 1 && in_array("MANAGER", $_SESSION["userRoles"])))
-              echo'<tr align="center">
-              <td>
-              <div class="btn-group" role="group">
-              <a class="edit-btn">
-                <button class="btn btn-primary btn-sm edit" data-id="'.$row["GUID"].'" >
-                <em class="fas fa-pencil-alt"></em></button>
-              </a>
+          echo'<tr align="center">
+          <td>
+          <div class="btn-group" role="group">
+          <a class="edit-btn">
+            <button class="btn btn-primary btn-sm edit" data-id="'.$row["GUID"].'" >
+            <em class="fas fa-pencil-alt"></em></button>
+          </a>
 
-              <a class="delete-btn">
-                <button class="btn btn-danger btn-sm restore" data-id="'.$row["GUID"].'" >
-                <em class="fas fa-undo-alt""></em></button>
-              </a>
-            </div>
-              </td>';
+          <a class="delete-btn">
+            <button class="btn btn-danger btn-sm restore" data-id="'.$row["GUID"].'" >
+            <em class="fas fa-undo-alt""></em></button>
+          </a>
+        </div>
+          </td>';
                             
           echo        "<td>" . $row['VNO'] . "</td>";
           echo        "<td>" . $row['ASSIGNEDTO'] . "</td>";
@@ -118,7 +112,8 @@ echo '
     CloseConn($conn);
 ?>
 
-<!-- <body> -->
+<body>
+
 <script>
   $(document).ready(function()
   {

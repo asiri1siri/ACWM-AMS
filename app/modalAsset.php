@@ -23,7 +23,7 @@
 
 <!-- Add New -->
 <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header text-center">
               <h4 class="modal-title w-100 font-weight-bold">Add Asset </h4>
@@ -33,6 +33,8 @@
 				<div class="container-fluid">
 				<form method='post' action='' enctype="multipart/form-data">
 					<input type="hidden" class="id" name="id">
+					<input type="hidden" name="tableHistory" id="tableHistory" value="<?php echo $table ?>"> <!-- added -->
+					<input type="hidden" name="userWhoUpdated" id="userWhoUpdated" value="<?php echo $_SESSION['username'] ?>"> <!-- added -->
 
 					<div class="form-row">
 					<div class="form-group col-md-6">
@@ -45,12 +47,6 @@
                              ?>
                          </select>
                     </div>
-
-					<!-- 
-						<div class="form-group col-md-6">
-							<label class="control-label">Location:</label>
-							<input type="text" class="form-control" name="location" id="location">
-						</div> -->
 						
 						<div class="form-group col-md-6">
 							<label class="control-label">Assignee:</label>
@@ -105,10 +101,6 @@
                             </select>
                         </div>
 					
-						<!-- <div class="form-group col-md-6">
-							<label class="control-label">Status:</label>
-							<input type="text" class="form-control" name="status" id="status">
-						</div> -->
 					
 						<div class="form-group col-md-6">
 							<label class="control-label"> Category:</label>
@@ -125,12 +117,6 @@
                                 ?>
                             </select>
                         </div>
-
-				
-					<!-- 	<div class="form-group col-md-6">
-							<label class="control-label">BinventUnitCode:</label>
-							<input type="text" class="form-control" name="binvent" id="binvent">
-						</div> -->
 					
 						<div class="form-group col-md-6">
 							<label class="control-label">Sublocation:</label>
@@ -148,24 +134,20 @@
                             </select>
                          </div>
 
-						<!-- <div class="form-group col-md-6">
-							<label class="control-label"> Bureau:</label>
-							<input type="text" class="form-control" name="bureau" id="bureau">
-						</div> -->
-
-						<div class="form-group col-md-6.5">
-							<label class="control-label"> Asset Image:</label>
-							<input type='file' name='file' id='file'>
-						</div>
 
 						<div class="form-group col-md-6">
-							<label class="control-label"> Location Image:</label>
+							<label class="control-label">Asset Image:</label>
 							<input type='file' name='file2' id='file2'>
 						</div>
 
-						<div class="form-group col-md-6.5">
-							<label class="control-label"> Assigee Image:</label>
+						<div class="form-group col-md-6">
+							<label class="control-label">Location Image:</label>
 							<input type='file' name='file3' id='file3'>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label class="control-label">Employee Image:</label>
+							<input type='file' name='file' id='file'>
 						</div>
 
 
@@ -184,7 +166,7 @@
 
 <!-- Edit -->
 <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header text-center">
 	            <h4 class="modal-title w-100 font-weight-bold">Edit Asset</h4>
@@ -194,6 +176,8 @@
 			<div class="container-fluid">
 			<form form method="post" action='' id="editForm" enctype="multipart/form-data">
 				<input type="hidden" class="id" name="id">
+					<input type="hidden" name="tableHistory" id="tableHistory" value="<?php echo $table ?>"> <!-- added -->
+					<input type="hidden" name="userWhoUpdated" id="userWhoUpdated" value="<?php echo $_SESSION['username'] ?>"> <!-- added -->
 				<div class="form-row">
 
 
@@ -207,10 +191,7 @@
                              ?>
                          </select>
                     </div>
-					<!-- <div class="form-group col-md-6">
-						<label class="control-label">Location:</label>
-						<input type="text" class="form-control location" name="location" id="location">
-					</div> -->
+					
 				
 					<div class="form-group col-md-6">
 						<label class="control-label">Assignee:</label>
@@ -265,10 +246,6 @@
                             </select>
                     </div>
 
-					<!-- <div class="form-group col-md-6">
-						<label class="control-label">Status:</label>
-						<input type="text" class="form-control status" name="status" id="status">
-					</div> -->
 				
 					<div class="form-group col-md-6">
 						<label class="control-label"> Category:</label>
@@ -286,11 +263,7 @@
                                 ?>
                             </select>
                     </div>
-			       <!-- <div class="form-group col-md-6">
-						<label class="control-label">BinventUnitCode:</label>
-						<input type="text" class="form-control binvent" name="binvent" id="binvent">
-					</div> -->
-				
+			  
 					<div class="form-group col-md-6">
 						<label class="control-label">Sublocation:</label>
 						<input type="text" class="form-control sublocations" name="sublocations" id="sublocations">
@@ -308,27 +281,23 @@
                             </select>
                          </div>
 				
-					<!-- <div class="form-group col-md-6">
-						<label class="control-label"> Bureau:</label>
-						<input type="text" class="form-control bureau" name="bureau" id="bureau">
-					</div> -->
 
-					<div class="form-group col-md-6.5">
+					<div class="form-group col-md-6">
 						<label class="control-label"> Asset Image:</label>
-						<input type="file" name="file" id="file"/>
-							<span id="asset_image"></span>
+						<input type="file" name="file2" id="file2"/>
+							<div id='asset_image'></div>
 					</div>
 
 					<div class="form-group col-md-6">
 						<label class="control-label"> Location Image:</label>
-						<input type="file" name="file2" id="file2"/>
-							<span id="location_image"></span>
+						<input type="file" name="file3" id="file3"/>
+							<div id='location_image'></div>
 					</div>
 
-					<div class="form-group col-md-6.5">
-						<label class="control-label"> Assignee Image:</label>
-						<input type="file" name="file3" id="file3"/>
-							<span id="assignee_image"></span>
+					<div class="form-group col-md-6">
+						<label class="control-label"> Employee Image:</label>
+						<input type="file" name="file" id="file"/>
+							<div id='assignee_image'></div>
 					</div>
 			</div>
            	</div> 
@@ -425,53 +394,23 @@
 					<input type="hidden" class="id" name="id">
 					<div class="form-row">
 
-						<div class="form-group col-md-6">
-							<label class="control-label">Description:</label>
-								<span id="descriptionInfo"></span>
-				
-						</div>
+					<div class="form-group col-md-6">
+						<label class="control-label"> Asset Image:</label>
+						
+							<div id='asset_imageInfo'></div>
+					</div>
 
-						<div class="form-group col-md-6">
-							<label class="control-label">Make:</label>
-								<span id="makeInfo"></span>
-				
-						</div>
+					<div class="form-group col-md-6">
+						<label class="control-label"> Location Image:</label>
+						
+							<div id='location_imageInfo'></div>
+					</div>
 
-						<div class="form-group col-md-6">
-							<label class="control-label">Model:</label>
-								<span id="modelInfo"></span>
-				
-						</div>
-
-						<div class="form-group col-md-6">
-							<label class="control-label">Serial No:</label>
-								<span id="serialInfo"></span>
-				
-						</div>
-
-						<div class="form-group col-md-6">
-							<label class="control-label">County No:</label>
-								<span id="countyInfo"></span>
-				
-						</div>
-
-						<div class="form-group col-md-6">
-							<label class="control-label">Acquire Date:</label>
-								<span id="dateInfo"></span>
-				
-						</div>
-
-						<div class="form-group col-md-6">
-							<label class="control-label">Comments:</label>
-								<span id="commentsInfo"></span>
-				
-						</div>
-
-						<div class="form-group col-md-6">
-							<label class="control-label">Category:</label>
-								<span id="categoryInfo"></span>
-				
-						</div>
+					<div class="form-group col-md-6">
+						<label class="control-label"> Employee Image:</label>
+						
+							<div id='assignee_imageInfo'></div>
+					</div>
 					
 					</div>
             	</div> 

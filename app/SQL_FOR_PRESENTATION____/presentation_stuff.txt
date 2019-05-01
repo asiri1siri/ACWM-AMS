@@ -1,0 +1,19 @@
+USER_ROLES
+employee id - (what they log in with) - 
+role_uid - 8a6ffc8e-82c3-11e7-b36c-005056a5b2f3 (same as APPLICATION_ROLES.uid)
+
+
+APPLICATION_ROLES
+uid - 8a6ffc8e-82c3-11e7-b36c-005056a5b2f3 (same as USER_ROLES.role_uid)
+application_uid (same as APPLICATION_INFORMATION.uid)
+
+APPLICATION_INFORMATION
+uid - 13347394-82b3-11e7-b36c-005056a5b2f3 (our app)
+
+ROLES
+uid = APPLICATION_ROLES.role_uid
+
+
+415506 - manager, user, admin
+537954 - user
+467657 - manager

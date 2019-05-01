@@ -23,7 +23,7 @@
       exportHiddenCells:   false,       // true = speed up export of large tables with hidden cells (hidden cells will be exported !)
       fileName:            'tableExport',
       htmlContent:         false,
-      ignoreColumn:        [],
+      ignoreColumn:        [0],         // edited by Mario: it will ignore the first column which is the actions buttons so the user doesnt need to hide the column to export, you may change it. 
       ignoreRow:           [],
       jsonScope:           'all',       // head, data, all
       jspdf: {                          // jsPDF / jsPDF-AutoTable related options

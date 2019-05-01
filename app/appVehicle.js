@@ -9,9 +9,9 @@ $(document).ready(function()
 $('#upload').click(function(){
 
                 var fd = new FormData();
-               
-                var files2 = $('#file2')[0].files[0];
+
                 var files = $('#file')[0].files[0];
+                var files2 = $('#file2')[0].files[0];
                 var files3 = $('#file3')[0].files[0];
                 var vno = $('#vno').val();
                 var assigned = $('#assigned').val();
@@ -25,9 +25,12 @@ $('#upload').click(function(){
                 var description = $('#description').val();
                 var bureau = $('#bureau').val();
                 var funding = $('#funding').val();
+                
+                var tableHistory = $('#tableHistory').val();
+                var userWhoUpdated = $('#userWhoUpdated').val();
            
-                fd.append('file2',files2);
                 fd.append('file',files);
+                fd.append('file2',files2);
                 fd.append('file3',files3);
                 fd.append('vno', vno);
                 fd.append('assigned',assigned);
@@ -41,10 +44,15 @@ $('#upload').click(function(){
                 fd.append('description', description);
                 fd.append('bureau', bureau);
                 fd.append('funding', funding);
+                
+                fd.append('tableHistory', tableHistory);
+                fd.append('userWhoUpdated', userWhoUpdated);
              
 
                 fd.append('request',1);
-
+                if(vno != '' && assigned != '' && license != '' && make != '' && model != '' && year != '' && housed != '' && vin != ''
+                      && unit != '' && description != '' && bureau != '' && funding != '' && files != '' && files2 != '' && files3 != '')
+                    {
                 // AJAX request
                 $.ajax({
                     url: 'addVehicle.php',
@@ -56,75 +64,61 @@ $('#upload').click(function(){
 
                         if(response != 0){
                             // Show image preview
-                            $('#preview').append("<img src='"+response+"' width='100' height='100' style='display: inline-block;'>");
-                              
+                            //$('#preview').append("<img src='"+response+"' width='100' height='100' style='display: inline-block;'>");
+                            $.ajax({
+                              method: 'POST',
+                              url: 'addToHistory_Add.php',
+                              data: fd,
+                              contentType:false,
+                              processData: false
+                            });
+
+                              myFunction();
                         }else{
                             alert('file not uploaded');
                         }
-                        myFunction()
+                      
                     }
                 });
+              } else {
+                alert("All Fields are Required");
+              }
             });
 //
 
-  // $('#addForm').submit(function(e)
-  // {
-  //   e.preventDefault();
-  //   var addform = $(this).serialize();
-  //   //console.log(addform);
-  //   $.ajax(
-  //     {
-  //     method: 'POST',
-  //     url: 'addVehicle.php',
-  //     data: addform,
-  //     dataType: 'json',
-  //     success: function(response)
-  //     {
-  //       $('#add').modal('hide');
-  //       if(response.error)
-  //       {
-  //         alert('error');
-  //         $('#alert').show();
-  //         $('#alert_message').html(response.message);
-  //       }
-  //       else
-  //       {
-  //         $('#alert').show();
-  //         $('#alert_message').html(response.message);
-  //          myFunction();
-
-  //       }
-  //     }
-  //   });
-  //  });
-
 
 //edit
-  $(document).on('click', '.edit', function(){
+   $(document).on('click', '.edit', function(){
     var id = $(this).data('id');
     getDetails(id);
-
-   // alert("error")
+    
     $('#edit').modal('show');
   });
 
     $('#editForm').submit(function(e){
     e.preventDefault();
-    //var editform = $(this).serialize();
+    var fd = new FormData(this);
    
-
     $.ajax({
       method: 'POST',
       url: 'editVehicle.php',
-      data:new FormData(this),
+      data:fd,
     contentType:false,
     processData:false,
       success:function(response){
-          //alert("hi")
+         
       if(response != 0){
-              
+             
                  alert("error")
                }else{
+    
+                $.ajax({
+                  method: 'POST',
+                  url: 'addToHistory.php',
+                  data: fd,
+                  contentType:false,
+                  processData: false
+                });
                 
                      $('#edit').modal('hide');
                 myFunction();
@@ -133,47 +127,8 @@ $('#upload').click(function(){
             
      }
   });
+  
   });
-
-
-// //edit
-//   $(document).on('click', '.edit', function()
-//   {
-//     var id = $(this).data('id');
-//     getDetails(id);
-//    // alert("error")
-//     $('#edit').modal('show');
-//   });
-
-//   $('#editForm').submit(function(e)
-//   {
-//     e.preventDefault();
-//     var editform = $(this).serialize();
-
-//     $.ajax(
-//       {
-//       method: 'POST',
-//       url: 'editVehicle.php',
-//       data: editform,
-//       dataType: 'json',
-//       success: function(response)
-//       {
-//         if(response.error)
-//         {
-//           $('#alert').show();
-//           $('#alert_message').html(response.message);
-//         }
-//         else
-//         {
-//           $('#alert').show();
-//           $('#alert_message').html(response.message);
-//           myFunction();
-//         }
-
-//         $('#edit').modal('hide');
-//       }
-//     });
-//   });
 
 
 //info
@@ -221,6 +176,26 @@ $('#upload').click(function(){
     });
 
   });
+  
+  //history info
+  $(document).on('click', '.history', function(){
+    var id = $(this).data('id');
+    var theCurrentTable = $('.theCurrentTable').val();
+
+    $.ajax({
+      method: 'POST',
+      url: 'modalHistory.php',
+      data: {id: id, theCurrentTable: theCurrentTable},
+      dataType: 'json',
+      success: function(response){
+        if(!response.error){
+
+          $('#modalHistoryBody').html(response.tableData);
+          $('#modalHistory').modal('show');
+        }
+      }
+    })
+  });
 
 }); // end function
 
@@ -251,9 +226,9 @@ $('#upload').click(function(){
         $('.description').val(response.data.DESCRIPTION);
         $('.bureau').val(response.data.BUREAU);
         $('.funding').val(response.data.FUNDINGORG);
-        $('#vehicle_uploaded_image').html(response.data.VEHICLE_IMAGE);
-        $('#employee_uploaded_image').html(response.data.EMPLOYEE_IMAGE);
-        $('#location_uploaded_image').html(response.data.LOCATION_IMAGE);
+        $('#vehicle_uploaded_image').html('<img src='+response.data.VEHICLE_IMAGE+' width="110" height="75">');
+        $('#employee_uploaded_image').html('<img src='+response.data.EMPLOYEE_IMAGE+' width="110" height="75">');
+        $('#location_uploaded_image').html('<img src='+response.data.LOCATION_IMAGE+' width="110" height="75">');
        
       }
     }
@@ -276,12 +251,10 @@ $('#upload').click(function(){
       }
       else{
         $('.id').val(response.data.GUID);
-        $('#licenseInfo').html(response.data.LICENSE);
-        $('#makeInfo').html(response.data.MAKE);
-        $('#modelInfo').html(response.data.MODEL);
-        $('#yearInfo').html(response.data.YEAR);
-        $('#vinInfo').html(response.data.VIN);
-        $('#descriptionInfo').html(response.data.DESCRIPTION);
+        $('#vehicle_image').html('<img src='+response.data.VEHICLE_IMAGE+' width="110" height="75">');
+        $('#employee_image').html('<img src='+response.data.EMPLOYEE_IMAGE+' width="110" height="75">');
+        $('#location_image').html('<img src='+response.data.LOCATION_IMAGE+' width="110" height="75">');
+
       }
     }
   });

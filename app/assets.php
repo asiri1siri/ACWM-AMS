@@ -1,9 +1,10 @@
-<!-- <!DOCTYPE html>
-<html>
-<head>
-</head> -->
+
+
 <?php  
+      include('redirectToLoginIfNotLoggedIn.php');
+      include('redirectHome_AdminOnly.php');
       include('header.php');
+      include('navbar.php');
   include 'db_connection.php';
 
   $table = "asset";
@@ -27,26 +28,23 @@ echo '
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a id="addnew" class="dropdown-item btn btn-success">Add Asset</a>
               <div id="toolbar"><a id="theButtonAsset" class="dropdown-item btn btn-success">Move Selected Items</a></div>
-                <li class="nav-item dropdown">
-                  <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Export</a>
-                    <ul class="dropdown-menu">
-                    <li><a href="#" class="dropdown-item btn btn-success" onclick="doExport()">Export to Excel</a></li>
-                    <li><a href="#" class="dropdown-item btn btn-success" onclick="doExportCSV()">Export to CSV</a></li>
-                    <li><a href="#" class="dropdown-item btn btn-success" onclick="doExportPDF()">Export to PDF</a></li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
+              <div id="toolbar2">
+              <select class="form-control">
+                <option value="">Export</option>
+                <option value="all">Export All</option>
+                <option value="selected">Export Select</option>
+            </select>
+            </div>
           </div>
         </div>';
     }
 
 echo '
-    <table id="myAssetTable" class="responstable" data-toggle="table" data-search="true" data-advanced-search="true" data-id-table="advancedTable" data-pagination="true" data-search-align="left" data-show-columns="true" data-click-to-select="true">
+      <table id="myAssetTable" class="responstable" data-toggle="table" data-search="true" data-pagination="true" data-search-align="left" data-show-columns="true" data-click-to-select="true" data-trim-on-search="false" data-multiple-search="true" data-show-export="true" data-toolbar="#toolbar2">
         <thead>
           <tr>';
 
-          echo '<th><em class="fas fa-cog "></em></th>';
+          echo '<th data-searchable="false"><em class="fas fa-cog "></em></th>';
 
           if((isset($_SESSION["username"])) && !(count($_SESSION['userRoles']) == 1 && in_array("MANAGER", $_SESSION["userRoles"]))) {
             echo '            
@@ -54,22 +52,22 @@ echo '
           }
 
           echo '
-          <th class="d-none" data-field="GUID">GUID</th>
-          <th>Asset Image</th>
+           <th class="d-none" data-field="GUID">GUID</th>
+          <th class="d-none">Asset Image</th>
           <th data-field="LOCATION" data-sortable="true">Location</th>
-          <th>Location Image</th>
+          <th class="d-none">Location Image</th>
           <th data-field="ASSIGNEE" data-sortable="true">Assignee</th>
-          <th>Assignee Image</th>
-          <th class="d-none" data-field="DESCRIPTION" data-sortable="true">Description</th>
-          <th class="d-none" data-field="MAKE" data-sortable="true">Make</th>
-          <th class="d-none" data-field="MODEL" data-sortable="true">Model</th>
-          <th class="d-none" data-field="SERIALNO" data-sortable="true">SerialNo</th>
-          <th class="d-none" data-field="COUNTYNO" data-sortable="true">CountyNo</th>
-          <th class="d-none" data-field="ACQDATE" data-sortable="true">Acqdate</th>
+          <th class="d-none">Assignee Image</th>
+          <th data-field="DESCRIPTION" data-sortable="true">Description</th>
+          <th data-field="MAKE" data-sortable="true">Make</th>
+          <th data-field="MODEL" data-sortable="true">Model</th>
+          <th data-field="SERIALNO" data-sortable="true">SerialNo</th>
+          <th data-field="COUNTYNO" data-sortable="true">CountyNo</th>
+          <th data-field="ACQDATE" data-sortable="true">Acqdate</th>
           <th data-field="COST" data-sortable="true">Cost</th>
-          <th class="d-none" data-field="COMMENTS" data-sortable="true">Comments</th>
+          <th data-field="COMMENTS" data-sortable="true">Comments</th>
           <th data-field="STATUS" data-sortable="true">Status</th>
-          <th class="d-none" data-field="CATEGORY" data-sortable="true">Category</th>
+          <th data-field="CATEGORY" data-sortable="true">Category</th>
           <th data-field="BINVENTUNITCODE" data-sortable="true">BIUCode</th>
           <th data-field="SUBLOCATION" data-sortable="true">Sublocation</th>
           <th>Bureau</th>
@@ -102,7 +100,14 @@ echo '
                 echo '
                   <a class="info-btn">
                   <button class="btn btn-success btn-sm info" data-id="'.$row["GUID"].'">
-                  <i class="fas fa-info-circle"></i></button>
+                  <i class="fa fa-image"></i></button>
+                </a>
+
+                <input type="hidden" class="theCurrentTable" name="theCurrentTable" value="'.$table.'" />
+
+                <a class="history-btn">
+                  <button class="btn btn-secondary btn-sm history" data-id="'.$row["GUID"].'">
+                  <i class="fas fa-history"></i></button>
                 </a>
 
                 </div>
@@ -154,7 +159,7 @@ echo '
     CloseConn($conn);
 ?>
     
-<!-- <body> -->
+<body>
     
 
     <!-- Add New Asset-->
@@ -167,13 +172,25 @@ echo '
 <script src="move.js"></script>
 
 
-<!-- BootStrap Advance Search-->
-<script type="text/javascript">
-        $(document).ready(function () {
-          $('#myAssetTable').bootstrapTable()
-        });
-</script>
+<!-- History -->
+<?php include("modalHistory.html")?>
 
+
+
+<!-- New Export Function much more cleaner-->
+<script>
+  var $table = $('#myAssetTable')
+  $(document).ready(function () {
+  $(function() {
+    $('#toolbar2').find('select').change(function () {
+      $table.bootstrapTable('destroy').bootstrapTable({
+        exportDataType: $(this).val(),
+        exportTypes: ['csv', 'sql', 'excel', 'pdf']
+      })
+    }).trigger('change')
+  })
+});
+</script>
 
 <!-- Single-Line Advance Search-->
 <!-- <script src="RESOURCES/myAdvanceSearch/js/jquery-3.3.1.min.js" type="text/javascript"></script>
@@ -184,7 +201,7 @@ echo '
         });
     </script> -->
 
-  <script type="text/javaScript">
+  <!-- <script type="text/javaScript">
       function doExport() {
         $('#myAssetTable').tableExport({
             type:'excel',
@@ -228,7 +245,8 @@ echo '
 
   return false;
 });
-    </script>
+    </script> -->
 
 </body>
 </html>
+

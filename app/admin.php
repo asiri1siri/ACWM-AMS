@@ -1,42 +1,29 @@
 <?php 
-include 'header.php'; 
-if (!isset($_SESSION['username']))
-{
-    header("Location: login.php");
-    exit();
-} 
-else if((count($_SESSION['userRoles']) == 1 && in_array("MANAGER", $_SESSION["userRoles"]))) {
-  echo '<h1 style="text-align: center">Sorry, you do not have permission to view this page.</h1></body></html>';
-}
-else {
-
 ob_start();
+include 'redirectToLoginIfNotLoggedIn.php';
+include 'header.php'; 
+include 'navbar.php';
 include 'db_connection.php';
 
-//if not logged in go to login page
-// if (!isset($_SESSION['username']))
-// {
-//     header("Location: login.php");
-//     exit();
-// } 
-
-// if(!in_array("ADMIN", $_SESSION["userRoles"]))
-// {
-//     header("Location: home.php");
-//     exit();
-// }
-
-// if(in_array("ADMIN", $_SESSION["userRoles"]))
-// {
-//     // echo"youre admin";
-// } 
-
-  // $table = "vehicle";
-  // $order_by = "guid";
+//if you are not an admin redirect to home
+if(!in_array("ADMIN", $_SESSION["userRoles"]))
+{
+    header("Location: home.php");
+    exit();
+}
         
   $conn = OpenCon();
-  $sql = "SELECT * FROM ROLES ORDER BY UID";
+  
+  //query for employee_id from user_roles table and role from roles table
+  $sql = "select acwm.user_roles.EMPLOYEE_ID, acwm.roles.ROLE 
+          from acwm.user_roles 
+          join acwm.application_roles 
+          on acwm.user_roles.ROLE_UID = acwm.application_roles.UID
+          join acwm.roles
+          on acwm.application_roles.ROLE_UID = acwm.roles.UID";
 
+          
+//html for table
 echo '<br><center><h1>Roles Directory</h1></center>';
 echo '
 <div class="col-md-12">
@@ -59,12 +46,11 @@ echo '
         <thead>
           <tr>
             <th><em class="fa fa-cog"></em></th>
-            <th data-sortable="true">UID</th>
-            <th data-sortable="true">ROLE</th>
+            <th data-sortable="true">Employee ID</th>
+            <th data-sortable="true">Role</th>
           </tr>
         </thead>
       <tbody>';
-          //  <tbody id="tbody">
         if ($result = $conn->query($sql))
         {
           // display records if there are records to display
@@ -78,17 +64,17 @@ echo '
             <td>
               <div class="btn-group" role="group">
                 <a class="edit-btn">
-                <button class="btn btn-primary btn-sm edit" data-id="'.$row["UID"].",".$row["ROLE"].'">
+                <button class="btn btn-primary btn-sm edit" data-id="'.$row["EMPLOYEE_ID"].",".$row["ROLE"].'">
                   <em class="fas fa-pencil-alt"></em></button>
                 </a>
                 <a class="delete-btn">
-                  <button class="btn btn-danger btn-sm delete" data-id="'.$row["UID"].",".$row["ROLE"].'">
+                  <button class="btn btn-danger btn-sm delete" data-id="'.$row["EMPLOYEE_ID"].",".$row["ROLE"].'">
                   <em class="fas fa-trash-alt""></em></button>
                 </a>
               </div>
             </td>';
            
-echo        "<td>" . $row['UID'] . "</td>";
+echo        "<td>" . $row['EMPLOYEE_ID'] . "</td>";
 echo        "<td>" . $row['ROLE'] . "</td>";      
 echo      "</tr>";
         }
@@ -112,20 +98,7 @@ echo  '   </tr> ';
         echo '</div>';
     CloseConn($conn);
 ?>
-<!-- <body> -->
-
-
-<?php
-    if (!isset($_SESSION['username']))
-    {
-        header("Location: login.php");
-        exit();
-    }
-
-    if (isset($_SESSION['username']) && !in_array("ADMIN", $_SESSION["userRoles"])) {
-      
-    }
-?>
+<body>
 
 <script>
   $(document).ready(function(){
@@ -137,7 +110,6 @@ echo  '   </tr> ';
   $('#addForm').submit(function(e){
     e.preventDefault();
     var addform = $(this).serialize();
-    //console.log(addform);
     $.ajax({
       method: 'POST',
       url: 'addUser.php',//addUser
@@ -164,9 +136,10 @@ echo  '   </tr> ';
 //edit
 $(document).on('click', '.edit', function(){
     var id = $(this).data('id').split(",");
-    getDetails(id[0]);
     $('#roleUID').val(id[0]);
     $('#roleROLE').val(id[1]);
+    $('#editUID').val(id[0]);
+    $('#editRole').val(id[1]);
     $('#edit').modal('show');
   });
 
@@ -192,24 +165,23 @@ $(document).on('click', '.edit', function(){
         }
 
         $('#edit').modal('hide');
+        window.location.reload();
       }
     });
   });
 
-///delete
-$(document).on('click', '.delete', function(){
+//delete
+ $(document).on('click', '.delete', function(){
      var id = $(this).data('id').split(",");
-     getDetails(id[0]);
      $('#roleUID_delete').val(id[0]);
      $('#roleROLE_delete').val(id[1]);
      $('#delete').modal('show');
    });
 
   $('#deleteForm').submit(function(e){
-   e.preventDefault();
+  //  e.preventDefault();
    var deleteform = $(this).serialize();
-   $('#delete').modal('hide');
-  window.location.reload();
+  //  $('#delete').modal('hide');
 
       $.ajax({
         method: 'POST',
@@ -217,25 +189,25 @@ $(document).on('click', '.delete', function(){
         data: deleteform,
         dataType: 'json',
         success: function(response){
-          //$('#delete').modal('hide');
           if(response.error){
             $('#alert').show();
             $('#alert_message').html(response.message);
-            window.location.reload();
           }
           else{
-            //console.log('check123');
             $('#alert').show();
             $('#alert_message').html(response.message);
-            window.location.reload();
-            myFunction();
-            $('#delete').modal('hide');
+            // window.location.reload();
+            // myFunction();
+            // $('#delete').modal('hide');          
           }
-
+          
           $('#delete').modal('hide');
+          // window.location.reload();
         }
-       })
-      })
+       });
+
+       
+      });
 
 //hide message
   $(document).on('click', '.close', function(){
@@ -276,5 +248,4 @@ function myFunction() {
 </body>
 </html>
 
-<?php include("modalUser.html")?> 
-<?php } ?>
+<?php include("modalUser.php")?> 

@@ -1,5 +1,6 @@
 <?php
     include 'db_connection.php';
+    session_start();
 
     $connection = OpenCon();
     $output = array('error' => false);
@@ -19,6 +20,15 @@
             $output['error'] = true;
             $output['message'] = "Move Failed...";
         }
+        
+        $sql = "insert into acwm.history values (:tableHistory, current_timestamp(), :userWhoUpdated, :id, 'Relocated')";
+
+        $theArray = explode(",",$vnos);
+        foreach($theArray as $value){
+            $statement = $connection->prepare($sql);
+            $statement->execute(array(':tableHistory' => $currentTable, ':userWhoUpdated' => $_SESSION['username'], ':id' => $value));
+        }
+    
     }
     catch (PDOException $e) {        
         $output['error'] = true;

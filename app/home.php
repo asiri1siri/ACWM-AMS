@@ -1,7 +1,9 @@
 <?php  
 
 ob_start();
+require 'redirectToLoginIfNotLoggedIn.php';
 require 'header.php';
+require 'navbar.php';
 
 //if not logged in go to login page
       
@@ -16,9 +18,8 @@ $printToPage = '<br><h3 style="text-align: center;">Welcome, '.$_SESSION["full_n
         $printToPage .= $value . " ";
       }
 
-      if (in_array("ADMIN", $pieces)) {
-        $printToPage .= "true";
-      }
+      // foreach ($_SESSION as $theVal)
+      //     $printToPage .= $theVal . " | ";
 
       $printToPage .= '</h3>';
 

@@ -4,7 +4,7 @@ function upload_image()
 	
 	$filename = $_FILES['file']['name'];
 		// // Location
-		$locationFile = 'upload/'.$filename;
+		$locationFile = 'employeeImages/'.$filename;
 
 		// file extension
 		$file_extension = pathinfo($locationFile, PATHINFO_EXTENSION);
@@ -30,7 +30,7 @@ function upload2_image()
 	
 	$filename2 = $_FILES['file2']['name'];
 		// // Location
-		$locationFile2 = 'upload/'.$filename2;
+		$locationFile2 = 'assetImages/'.$filename2;
 
 		// file extension
 		$file_extension2 = pathinfo($locationFile2, PATHINFO_EXTENSION);
@@ -56,7 +56,7 @@ function upload3_image()
 	
 	$filename3 = $_FILES['file3']['name'];
 		// // Location
-		$locationFile3 = 'upload/'.$filename3;
+		$locationFile3 = 'locationImages/'.$filename3;
 
 		// file extension
 		$file_extension3 = pathinfo($locationFile3, PATHINFO_EXTENSION);

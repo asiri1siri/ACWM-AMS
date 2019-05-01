@@ -6,6 +6,7 @@ if ($_SERVER['SERVER_ADDR'] == '10.37.58.16') {
 
 function isUser_isdADAuthorized($postedValues)
 {
+    echo "test1 ";
     if (array_key_exists("logonPass", $_POST)) {
         //for query call
         $hostname = "localhost"; 
@@ -62,6 +63,8 @@ function isUser_isdADAuthorized($postedValues)
                     //echo var_dump ( $jsonUserRoles );
                     //exit();
                     
+
+                    echo $employeeID . "test222";
 
                     //not part of the original code; temporary placeholder to set session of userRoles
                     $query3 = "SELECT getUserRoles($employeeID, '$ApplicationUID')";

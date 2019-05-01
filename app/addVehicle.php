@@ -17,7 +17,7 @@ $description = $_POST['description'];
 $bureau = $_POST['bureau'];
 $funding = $_POST['funding'];
 //Prepared statement
-$query = "INSERT INTO vehicle (VEHICLE_IMAGE, EMPLOYEE_IMAGE, LOCATION_IMAGE, VNO, ASSIGNEDTO, LICENSE, MAKE, MODEL, YEAR, HOUSED, VIN, UNIT, DESCRIPTION, BUREAU, FUNDINGORG) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+$query = "INSERT INTO vehicle ( EMPLOYEE_IMAGE, VEHICLE_IMAGE, LOCATION_IMAGE, VNO, ASSIGNEDTO, LICENSE, MAKE, MODEL, YEAR, HOUSED, VIN, UNIT, DESCRIPTION, BUREAU, FUNDINGORG) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 
 
@@ -28,9 +28,9 @@ $filename2 = $_FILES['file2']['name'];
 $filename3 = $_FILES['file3']['name'];
 
 // Location
-$location = 'upload/'.$filename;
-$location2 = 'upload/'.$filename2;
-$location3 = 'upload/'.$filename3;
+$location = 'employeeImages/'.$filename;
+$location2 = 'assetImages/'.$filename2;
+$location3 = 'locationImages/'.$filename3;
 
 // file extension
 $file_extension = pathinfo($location, PATHINFO_EXTENSION);
@@ -43,7 +43,7 @@ $file_extension3 = pathinfo($location3, PATHINFO_EXTENSION);
 $file_extension3 = strtolower($file_extension3);
 
 // Valid image extensions
-$image_ext = array("jpg","png","jpeg","gif");
+$image_ext = array("jpg","png","jpeg");
 
 $response = 0;
 $response2 = 0;
@@ -58,7 +58,7 @@ if(in_array($file_extension,$image_ext)){
 						$response2 = $location2;
 							if(move_uploaded_file($_FILES['file3']['tmp_name'],$location3)){
 								$response3 = $location3;
-								$statement->execute(array($response2, $response, $response3, $vno, $assigned, $license, $make, $model, $year, $housed, $vin, $unit, $description, $bureau, $funding));
+								$statement->execute(array($response, $response2, $response3, $vno, $assigned, $license, $make, $model, $year, $housed, $vin, $unit, $description, $bureau, $funding));
 							}
 				     }
 				}
@@ -69,33 +69,5 @@ if(in_array($file_extension,$image_ext)){
 echo $response;
 //close connection
 	$database->close();
-	// include_once('connection.php');
-
-	// $output = array('error' => false);
-
-	// $database = new Connection();
-	// $db = $database->open();
-	// try{
-	// 	//make use of prepared statement to prevent sql injection
-	// 	$stmt = $db->prepare("INSERT INTO VEHICLE (VNO, ASSIGNEDTO, LICENSE, MAKE, MODEL, YEAR, HOUSED, VIN, UNIT, DESCRIPTION, BUREAU, FUNDINGORG) VALUES (:vno, :assigned, :license, :make, :model, :year, :housed, :vin, :unit, :description, :bureau, :funding)");
-	// 	//if-else statement in executing our prepared statement
-	// 	if ($stmt->execute(array(':vno' => $_POST['vno'] , ':assigned' => $_POST['assigned'] , ':license' => $_POST['license'], ':make' => $_POST['make'] , ':model' => $_POST['model'] , ':year' => $_POST['year'], ':housed' => $_POST['housed'] , ':vin' => $_POST['vin'] , ':unit' => $_POST['unit'], ':description' => $_POST['description'] , ':bureau' => $_POST['bureau'] , ':funding' => $_POST['funding'])) ){
-	// 		$output['message'] = 'Vehicle added successfully';
-	// 	}
-	// 	else{
-	// 		$output['error'] = true;
-	// 		$output['message'] = 'Something went wrong. Cannot add member';
-	// 	} 
-		   
-	// }
-	// catch(PDOException $e){
-	// 	$output['error'] = true;
- // 		$output['message'] = $e->getMessage();
-	// }
-
-	// //close connection
-	// $database->close();
-
-	// echo json_encode($output);
-
+	
 ?>
