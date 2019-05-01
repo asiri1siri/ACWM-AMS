@@ -53,11 +53,11 @@ echo '
 
           echo '
            <th class="d-none" data-field="GUID">GUID</th>
-          <th class="d-none">Asset Image</th>
+
           <th data-field="LOCATION" data-sortable="true">Location</th>
-          <th class="d-none">Location Image</th>
+
           <th data-field="ASSIGNEE" data-sortable="true">Assignee</th>
-          <th class="d-none">Assignee Image</th>
+
           <th data-field="DESCRIPTION" data-sortable="true">Description</th>
           <th data-field="MAKE" data-sortable="true">Make</th>
           <th data-field="MODEL" data-sortable="true">Model</th>
@@ -116,11 +116,11 @@ echo '
               echo  "<td></td>";
             }
             echo  "<td>" . $row['GUID'] . "</td>";
-            echo '<td><img  src="'.$row['ASSET_IMAGE'].'" width="100" height="75"></td>';
+
             echo  "<td>" . $row['LOCATION'] . "</td>";
-            echo '<td><img  src="'.$row['LOCATION_IMAGE'].'" width="100" height="75"></td>';
+          
             echo  "<td>" . $row['ASSIGNEE'] . "</td>";
-            echo '<td><img  src="'.$row['ASSIGNEE_IMAGE'].'" width="100" height="75"></td>';
+            
             echo  "<td>" . $row['DESCRIPTION'] . "</td>";
             echo  "<td>" . $row['MAKE'] . "</td>";
             echo  "<td>" . $row['MODEL'] . "</td>";
@@ -185,68 +185,12 @@ echo '
     $('#toolbar2').find('select').change(function () {
       $table.bootstrapTable('destroy').bootstrapTable({
         exportDataType: $(this).val(),
-        exportTypes: ['csv', 'sql', 'excel', 'pdf']
+        exportTypes: ['csv', 'excel', 'pdf']
       })
     }).trigger('change')
   })
 });
 </script>
 
-<!-- Single-Line Advance Search-->
-<!-- <script src="RESOURCES/myAdvanceSearch/js/jquery-3.3.1.min.js" type="text/javascript"></script>
-<script src="RESOURCES/myAdvanceSearch/js/addons/datatables.min.js" type="text/javascript"></script>
-<script type="text/javascript">
-        $(document).ready(function () {
-            $('#myAssetTable').DataTable();
-        });
-    </script> -->
-
-  <!-- <script type="text/javaScript">
-      function doExport() {
-        $('#myAssetTable').tableExport({
-            type:'excel',
-            mso: {
-              styles: ['background-color',
-                       'color',
-                       'font-family',
-                       'font-size',
-                       'font-weight',
-                       'text-align']
-            }
-          }
-        );
-      }
-      function doExportCSV(){
-        $('#myAssetTable').tableExport({type:'csv'});
-      }
-      function doExportPDF(){
-        $('#myAssetTable').tableExport({type:'pdf',
-                           jspdf: {orientation: 'l',
-                                   format: 'a3',
-                                   margins: {left:10, right:10, top:20, bottom:20},
-                                   autotable: {styles: {fillColor: 'inherit', 
-                                                        textColor: 'inherit'},
-                                               tableWidth: 'auto'}
-            }
-         });
-      }
-
-  // drop down function for export 
-  $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
-  if (!$(this).next().hasClass('show')) {
-    $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
-  }
-  var $subMenu = $(this).next(".dropdown-menu");
-  $subMenu.toggleClass('show');
-
-  $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
-    $('.dropdown-submenu .show').removeClass("show");
-  });
-
-  return false;
-});
-    </script> -->
-
 </body>
 </html>
-

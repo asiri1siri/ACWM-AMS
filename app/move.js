@@ -75,7 +75,7 @@ $(document).ready(function(){
                 $('#alert').show();
                 $('#alert_message').html(response.message);
                 $('#moveAsset').modal('hide');
-                // location.reload();
+                location.reload();
             }
         });
     });

@@ -40,9 +40,9 @@ echo '
       <th><em class="fa fa-cog"></em></th>
       <th data-checkbox="true"></th>
       <th class="d-none" data-field="GUID" data-sortable="true">GUID</th>
-      <th class="d-none">Assignee Image</th>
+
       <th data-field="ASSIGNEE" data-sortable="true">Assignee</th>
-      <th class="d-none">Item Image</th>
+
       <th data-field="ITEM_TYPE" data-sortable="true">Item Type</th>
       <th data-field="SERIAL_NO" data-sortable="true">Serial Number</th>
       <th data-field="MODEL" data-sortable="true">Model</th>
@@ -54,7 +54,7 @@ echo '
       <th data-field="COMMENTS" data-sortable="true">Comments</th>
       <th data-field="STATUS" data-sortable="true">Status</th>
       <th data-field="COUNTY_NO" data-sortable="true">County Number</th>
-      <th class="d-none">Location Image</th>
+
       <th data-field="MAP_LOCATION" data-sortable="true">Map Location</th>
       <th data-field="WORK_SITE" data-sortable="true">Work Site</th>
       <th data-field="BUREAU" data-sortable="true">Bureau</th>
@@ -102,9 +102,9 @@ echo '
           </td>';
           echo        "<td></td>";   
           echo  "<td>" . $row['GUID'] . "</td>";
-          echo '<td><img src="'.$row['ASSIGNEE_IMAGE'].'" width="110" height="75"></td>';  
+ 
           echo        "<td>" . $row['ASSIGNEE'] . "</td>"; 
-          echo '<td><img src="'.$row['ITEM_IMAGE'].'" width="110" height="75"></td>'; 
+
           echo        "<td>" . $row['ITEM_TYPE'] . "</td>"; 
           echo        "<td>" . $row['SERIAL_NO'] . "</td>";
           echo        "<td>" . $row['MODEL'] . "</td>";             
@@ -116,7 +116,7 @@ echo '
           echo        "<td>" . $row['COMMENTS'] . "</td>";
           echo        "<td>" . $row['STATUS'] . "</td>";
           echo        "<td>" . $row['COUNTY_NO'] . "</td>";
-          echo '<td><img src="'.$row['LOCATION_IMAGE'].'" width="110" height="75"></td>'; 
+
           echo        "<td>" . $row['MAP_LOCATION'] . "</td>";
           echo        "<td>" . $row['WORK_SITE'] . "</td>";
           echo        "<td>" . $row['BUREAU'] . "</td>";
@@ -184,69 +184,13 @@ echo '
     $('#toolbar2').find('select').change(function () {
       $table.bootstrapTable('destroy').bootstrapTable({
         exportDataType: $(this).val(),
-        exportTypes: ['csv', 'sql', 'excel', 'pdf']
+        exportTypes: ['csv', 'excel', 'pdf']
       })
     }).trigger('change')
   })
 });
 </script>
 
-<!-- Single-Line Advance Search-->
-<!-- <script src="RESOURCES/myAdvanceSearch/js/jquery-3.3.1.min.js" type="text/javascript"></script>
-<script src="RESOURCES/myAdvanceSearch/js/addons/datatables.min.js" type="text/javascript"></script>
-<script type="text/javascript">
-        $(document).ready(function () {
-            $('#myComputerAssets').DataTable();
-        });
-    </script> -->
-
-<!-- <script type="text/javaScript">
-function doExport() {
-        $('#myComputerAssets').tableExport({
-            type:'excel',
-            mso: {
-              styles: ['background-color',
-                       'color',
-                       'font-family',
-                       'font-size',
-                       'font-weight',
-                       'text-align']
-            }
-          }
-        );
-      }
-function doExportCSV(){
-        $('#myComputerAssets').tableExport({type:'csv'});
-      }
-function doExportPDF(){
-        $('#myComputerAssets').tableExport({type:'pdf',
-                           jspdf: {orientation: 'l',
-                                   format: 'a3',
-                                   margins: {left:10, right:10, top:20, bottom:20},
-                                   autotable: {styles: {fillColor: 'inherit', 
-                                                        textColor: 'inherit'},
-                                               tableWidth: 'auto'}
-                                  }
-                          });
-      }
-
-  // drop down function for export 
-  $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
-  if (!$(this).next().hasClass('show')) {
-    $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
-  }
-  var $subMenu = $(this).next(".dropdown-menu");
-  $subMenu.toggleClass('show');
-
-  $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
-    $('.dropdown-submenu .show').removeClass("show");
-  });
-
-
-  return false;
-});
-    </script> -->
-<!-- Missing modalComouter.html--> 
 </body>
 </html>
 

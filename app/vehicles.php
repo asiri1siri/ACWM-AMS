@@ -51,15 +51,15 @@ echo '
       }
 
       echo '
-      <th class="d-none" >Vehicle Image</th>
+
       <th data-field="VNO" data-sortable="true"">VNO</th>
-      <th class="d-none" >Employee Image</th>
+
       <th data-field="ASSIGNEDTO" data-sortable="true">Assigned To</th>
       <th data-field="LICENSE" data-sortable="true">License</th>
       <th data-field="MAKE" data-sortable="true">Make</th>
       <th data-field="MODEL" data-sortable="true">Model</th>
       <th data-field="YEAR" data-sortable="true">Year</th>
-      <th class="d-none" >Housed Image</th>
+
       <th data-field="HOUSED" data-sortable="true">Housed</th>
       <th data-field="VIN" data-sortable="true">VIN</th>
       <th data-field="UNIT" data-sortable="true">Unit</th>
@@ -114,15 +114,15 @@ echo '
           }
          
           
-          echo '<td><img src="'.$row['VEHICLE_IMAGE'].'" width="110" height="75"></td>';                        
+                      
           echo        "<td>" . $row['VNO'] . "</td>";
-          echo '<td><img  src="'.$row['EMPLOYEE_IMAGE'].'" width="110" height="75"></td>'; 
+
           echo        "<td>" . $row['ASSIGNEDTO'] . "</td>"; 
           echo        "<td>" . $row['LICENSE'] . "</td>";
           echo        "<td>" . $row['MAKE'] . "</td>";
           echo        "<td>" . $row['MODEL'] . "</td>";
           echo        "<td>" . $row['YEAR'] . "</td>";
-          echo '<td><img  src="'.$row['LOCATION_IMAGE'].'" width="110" height="75"></td>';  
+
           echo        "<td>" . $row['HOUSED'] . "</td>";
           echo        "<td>" . $row['VIN'] . "</td>";
           echo        "<td>" . $row['UNIT'] . "</td>";
@@ -194,59 +194,13 @@ echo '
     $('#toolbar2').find('select').change(function () {
       $table.bootstrapTable('destroy').bootstrapTable({
         exportDataType: $(this).val(),
-        exportTypes: ['csv', 'sql', 'excel', 'pdf']
+        exportTypes: ['csv', 'excel', 'pdf']
       })
     }).trigger('change')
   })
 });
 </script>
-<!-- <script type="text/javaScript">
-function doExport() {
-     
-        $('#myVehiclesTable').tableExport({
-            type:'excel',
-            mso: {
-              styles: ['background-color',
-                       'color',
-                       'font-family',
-                       'font-size',
-                       'font-weight',
-                       'text-align']
-            }
-          }
-        );
-      }
-function doExportCSV(){
-        $('#myVehiclesTable').tableExport({type:'csv'});
-      }
-function doExportPDF(){
-        $('#myVehiclesTable').tableExport({type:'pdf',
-                           jspdf: {orientation: 'l',
-                                   format: 'a3',
-                                   margins: {left:10, right:10, top:20, bottom:20},
-                                   autotable: {styles: {fillColor: 'inherit', 
-                                                        textColor: 'inherit'},
-                                               tableWidth: 'auto'}
-                                  }
-                          });
-      }
 
-  // drop down function for export 
-  $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
-  if (!$(this).next().hasClass('show')) {
-    $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
-  }
-  var $subMenu = $(this).next(".dropdown-menu");
-  $subMenu.toggleClass('show');
-
-  $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
-    $('.dropdown-submenu .show').removeClass("show");
-  });
-
-
-  return false;
-});
-    </script> -->
 
 </body>
 </html>

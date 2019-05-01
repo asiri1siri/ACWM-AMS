@@ -32,7 +32,7 @@
 
 <!-- Add New -->
 <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header text-center">
               <h4 class="modal-title w-100 font-weight-bold">Add Computer </h4>
@@ -216,7 +216,7 @@
 
 <!-- Edit -->
 <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header text-center">
 	            <h4 class="modal-title w-100 font-weight-bold">Edit Asset</h4>
