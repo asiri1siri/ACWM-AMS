@@ -1,12 +1,22 @@
- <?php  
- include('redirectToLoginIfNotLoggedIn.php');
- include('redirectHome_AdminOnly.php');
- include('header.php');
- include('navbar.php'); 
+<!DOCTYPE html>
+<html>
+<head>
+    <?php  
+    include('redirectToLoginIfNotLoggedIn.php');
+    include('redirectHome_AdminOnly.php');
+    include('header.php');
+    include('navbar.php'); 
+    ?>
+    <script type="text/javascript" src="export/libs/FileSaver/FileSaver.min.js"></script>
+    <script type="text/javascript" src="export/libs/js-xlsx/xlsx.core.min.js"></script>
+</head>
+
+
+<?php
   include 'db_connection.php';
   $table = "computer";      
   $conn = OpenCon();
-  $sql = "SELECT * FROM COMPUTER ORDER BY GUID";
+  $sql = "SELECT * FROM SALVAGE_COMPUTER ORDER BY GUID";
 
 echo '<br><center><h1>Computer Inventory</h1></center>';
 echo '
@@ -35,7 +45,7 @@ echo '
   <thead>
     <tr>
       <th><em class="fa fa-cog"></em></th>
-      <th data-checkbox="true"></th>
+      
       <th class="d-none" data-field="GUID" data-sortable="true">GUID</th>
 
       <th data-field="ASSIGNEE" data-sortable="true">Assignee</th>
@@ -97,7 +107,7 @@ echo '
                 </a>
             </div>
           </td>';
-          echo        "<td></td>";   
+          
           echo  "<td>" . $row['GUID'] . "</td>";
  
           echo        "<td>" . $row['ASSIGNEE'] . "</td>"; 

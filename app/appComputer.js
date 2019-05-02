@@ -186,44 +186,44 @@ $('#upload').click(function(){
     $('#info').modal('show');
   });
 
-//   //hide-delete message (will move to salvage_asset table)
-//   $(document).on('click', '.delete', function()
-//   {
-//     var id = $(this).data('id');
-//     getDetails(id);
-//     //alert(id);
-//     $('#delete').modal('show');
-//   });
+  //hide-delete message (will move to salvage_asset table)
+  $(document).on('click', '.delete', function()
+  {
+    var id = $(this).data('id');
+    getDetails(id);
+    //alert(id);
+    $('#delete').modal('show');
+  });
 
-//   $('#salvageForm').submit(function(e)
-//   {
-//     e.preventDefault();
-//     var salvageform = $(this).serialize();
+  $('#salvageForm').submit(function(e)
+  {
+    e.preventDefault();
+    var salvageform = $(this).serialize();
 
-//     $.ajax(
-//     {
-//       method: 'POST',
-//       url: 'v_to_s.php',
-//       data: salvageform,
-//       dataType: 'json',
-//       success: function(response)
-//       {
-//         $('#delete').modal('hide');
-//         if(response.error)
-//         {
-//           $('#alert').show();
-//           $('#alert_message').html(response.message);
-//         }
-//         else
-//         {
-//           $('#alert').show();
-// 		      $('#alert_message').html(response.message);
-// 		      myFunction();
-//         }
-//       }
-//     });
+    $.ajax(
+    {
+      method: 'POST',
+      url: 'c_to_s.php',
+      data: salvageform,
+      dataType: 'json',
+      success: function(response)
+      {
+        $('#delete').modal('hide');
+        if(response.error)
+        {
+          $('#alert').show();
+          $('#alert_message').html(response.message);
+        }
+        else
+        {
+          $('#alert').show();
+		      $('#alert_message').html(response.message);
+		      myFunction();
+        }
+      }
+    });
 
-//   });
+  });
 
   //history info
   $(document).on('click', '.history', function(){

@@ -1,5 +1,3 @@
-
-
 <?php  
       include('redirectToLoginIfNotLoggedIn.php');
       include('redirectHome_AdminOnly.php');
@@ -19,13 +17,15 @@ echo '
       <span id="alert_message"></span>
     </div> ';
   
-    if((isset($_SESSION["username"])) && !(count($_SESSION['userRoles']) == 1 && in_array("MANAGER", $_SESSION["userRoles"]))) {
+    if((in_array("USER", $_SESSION["userRoles"]) || in_array("MANAGER", $_SESSION["userRoles"]))) { //changed
       echo '
-        <div class="columns columns-right btn-group float-left">
+        <div class="columns columns-right btn-group float-left">';
+        
+          if (in_array("USER", $_SESSION['userRoles'])) //changed
+          echo '
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Actions
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          </a><div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a id="addnew" class="dropdown-item btn btn-success">Add Asset</a>
               <div id="toolbar"><a id="theButtonAsset" class="dropdown-item btn btn-success">Move Selected Items</a></div>
               <div id="toolbar2">
@@ -34,9 +34,9 @@ echo '
                 <option value="all">Export All</option>
                 <option value="selected">Export Select</option>
             </select>
-            </div>
-          </div>
-        </div>';
+            </div>';
+          echo '</div>
+          </div>';
     }
 
 echo '
@@ -46,18 +46,15 @@ echo '
 
           echo '<th data-searchable="false"><em class="fas fa-cog "></em></th>';
 
-          if((isset($_SESSION["username"])) && !(count($_SESSION['userRoles']) == 1 && in_array("MANAGER", $_SESSION["userRoles"]))) {
+          if (in_array("USER", $_SESSION['userRoles'])) { //changed
             echo '            
             <th data-checkbox="true"></th>';
           }
 
           echo '
            <th class="d-none" data-field="GUID">GUID</th>
-
           <th data-field="LOCATION" data-sortable="true">Location</th>
-
           <th data-field="ASSIGNEE" data-sortable="true">Assignee</th>
-
           <th data-field="DESCRIPTION" data-sortable="true">Description</th>
           <th data-field="MAKE" data-sortable="true">Make</th>
           <th data-field="MODEL" data-sortable="true">Model</th>
@@ -84,7 +81,7 @@ echo '
           echo '<tr align="center">
               <td>
                 <div class="btn-group" role="group">';
-          if((isset($_SESSION["username"])) && !(count($_SESSION['userRoles']) == 1 && in_array("MANAGER", $_SESSION["userRoles"]))) {
+                if (in_array("USER", $_SESSION['userRoles'])) {//changed
             echo '
                   <a class="edit-btn">
                     <button class="btn btn-primary btn-sm edit" data-id="'.$row["GUID"].'">
@@ -112,15 +109,15 @@ echo '
 
                 </div>
               </td>';
-            if((isset($_SESSION["username"])) && !(count($_SESSION['userRoles']) == 1 && in_array("MANAGER", $_SESSION["userRoles"]))) {
+              if (in_array("USER", $_SESSION['userRoles'])) {//changed
               echo  "<td></td>";
             }
             echo  "<td>" . $row['GUID'] . "</td>";
-
+            // echo '<td><img  src="'.$row['ASSET_IMAGE'].'" width="100" height="75"></td>';
             echo  "<td>" . $row['LOCATION'] . "</td>";
-          
+            // echo '<td><img  src="'.$row['LOCATION_IMAGE'].'" width="100" height="75"></td>';
             echo  "<td>" . $row['ASSIGNEE'] . "</td>";
-            
+            // echo '<td><img  src="'.$row['ASSIGNEE_IMAGE'].'" width="100" height="75"></td>';
             echo  "<td>" . $row['DESCRIPTION'] . "</td>";
             echo  "<td>" . $row['MAKE'] . "</td>";
             echo  "<td>" . $row['MODEL'] . "</td>";
@@ -185,7 +182,7 @@ echo '
     $('#toolbar2').find('select').change(function () {
       $table.bootstrapTable('destroy').bootstrapTable({
         exportDataType: $(this).val(),
-        exportTypes: ['csv', 'excel', 'pdf']
+        exportTypes: ['csv', 'sql', 'excel', 'pdf']
       })
     }).trigger('change')
   })

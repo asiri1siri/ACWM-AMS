@@ -41,6 +41,7 @@
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 							<a class="dropdown-item" href="salvage_assets.php">Fixed/Portable</a>
 							<a class="dropdown-item" href="salvage_vehicles.php">Vehicles</a>
+							<a class="dropdown-item" href="salvage_computers.php">Computers</a>
 							<?php if ((isset($_SESSION["userRoles"])) && in_array("USER", $_SESSION['userRoles'])) { ?>
 								<a class="dropdown-item" href="salvage_forms.php">Forms</a>
 							<?php } ?>
