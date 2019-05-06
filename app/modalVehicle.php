@@ -21,7 +21,9 @@
 	$fundingResult = $connection->query($fundingQuery);
 	$fundResult = $connection->query($fundingQuery);
 
+	$makesQuery = "SELECT MAKE from `makes`";
 
+	$assigneeQuery = "SELECT EMPLOYEE_ID from `user_roles`";
 ?>
 
 
@@ -49,7 +51,16 @@
 					
 						<div class="form-group col-md-6">
 							<label class="control-label">Assigned To:</label>
-							<input type="text" class="form-control" name="assigned" id="assigned">
+							<!-- <input type="text" class="form-control" name="assigned" id="assigned"> -->
+							<select	class="form-control" name="assigned" id="assigned">
+								<option value="Unassigned">Unassigned</option>
+								<?php
+									$assigneeAdd = $connection->query($assigneeQuery);
+									while ($row = $assigneeAdd->fetch()){
+										echo "<option value='".$row['EMPLOYEE_ID']."'>".$row['EMPLOYEE_ID']."</option>";
+									}
+								?>
+							</select>
 						</div>
 					
 						<div class="form-group col-md-6">
@@ -59,7 +70,15 @@
 									
 						<div class="form-group col-md-6">
 							<label class="control-label">Make:</label>
-							<input type="text" class="form-control" name="make" id="make">
+							<!-- <input type="text" class="form-control" name="make" id="make"> -->
+							<select class="form-control" name="make" id="make">
+								<?php
+									$makesAdd = $connection->query($makesQuery);
+									while ($row = $makesAdd->fetch()) {
+										echo "<option value='".$row['MAKE']."'>".$row['MAKE']."</option>";
+									}
+								?>
+							</select>
 						</div>				
 					
 						<div class="form-group col-md-6">
@@ -195,7 +214,16 @@
 		
 						<div class="form-group col-md-6">
 							<label class="control-label">Assigned To:</label>
-							<input type="text" class="form-control assigned" name="assigned" id="assigned">
+							<!-- <input type="text" class="form-control assigned" name="assigned" id="assigned"> -->
+							<select	class="form-control assigned" name="assigned" id="assigned">
+								<option value="Unassigned">Unassigned</option>
+								<?php
+									$assigneeAdd = $connection->query($assigneeQuery);
+									while ($row = $assigneeAdd->fetch()){
+										echo "<option value='".$row['EMPLOYEE_ID']."'>".$row['EMPLOYEE_ID']."</option>";
+									}
+								?>
+							</select>
 						</div>
 		
 						<div class="form-group col-md-6">
@@ -206,7 +234,15 @@
 		
 						<div class="form-group col-md-6">
 							<label class="control-label">Make:</label>
-							<input type="text" class="form-control make" name="make" id="make">
+							<!-- <input type="text" class="form-control make" name="make" id="make"> -->
+							<select class="form-control make" name="make" id="make">
+								<?php
+									$makesEdit = $connection->query($makesQuery);
+									while ($row = $makesEdit->fetch()) {
+										echo "<option value='".$row['MAKE']."'>".$row['MAKE']."</option>";
+									}
+								?>
+							</select>
 						</div>
 		
 						<div class="form-group col-md-6">

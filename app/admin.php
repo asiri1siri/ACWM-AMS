@@ -155,15 +155,20 @@ $(document).on('click', '.edit', function(){
         if(response.error){
           $('#alert').show();
           $('#alert_message').html(response.message);
+
+          $('#edit').modal('hide');
         }
         else{
           $('#alert').show();
           $('#alert_message').html(response.message);
           myFunction();
+
+          $('#edit').modal('hide');
+          window.location.reload();
         }
 
-        $('#edit').modal('hide');
-        window.location.reload();
+        // $('#edit').modal('hide');
+        // window.location.reload();
       }
     });
   });
@@ -177,10 +182,8 @@ $(document).on('click', '.edit', function(){
    });
 
   $('#deleteForm').submit(function(e){
-  //  e.preventDefault();
+   e.preventDefault();
    var deleteform = $(this).serialize();
-  //  $('#delete').modal('hide');
-
       $.ajax({
         method: 'POST',
         url: 'deleteUser.php',
@@ -190,17 +193,20 @@ $(document).on('click', '.edit', function(){
           if(response.error){
             $('#alert').show();
             $('#alert_message').html(response.message);
+            $('#delete').modal('hide');
+
           }
           else{
             $('#alert').show();
             $('#alert_message').html(response.message);
-            // window.location.reload();
-            // myFunction();
-            // $('#delete').modal('hide');          
+            window.location.reload();
+            myFunction();
+            // $('#delete').modal('hide');   
+            window.location.reload();       
           }
           
-          $('#delete').modal('hide');
-          window.location.reload();
+          // $('#delete').modal('hide');
+          // window.location.reload();
         }
        });
 

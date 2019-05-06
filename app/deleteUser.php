@@ -1,11 +1,11 @@
 <?php
 	//the delete shoould revome from the application_roles based un the user's uid and the selected role
 
+	session_start();
+
 	include_once('connection.php');
 	// include('function.php');
 	$output = array('error' => false);
-
-	echo 'test';
 
 	$database = new Connection();
 	$db = $database->open();
@@ -46,12 +46,18 @@
 		// $sql = "DELETE FROM ROLES WHERE UID = '$result' AND ROLE = '$oldROLE'"; //where statement?
 		$sql = "delete from application_roles where uid = '$oldEmployeeUID' and role_uid = '$oldRoleUID'";
 		//if-else statement in executing our query
-		if($db->exec($sql)){
-			$output['message'] = 'User role deleted successfully';
-		} 
-		else{
+		if($oldUID === $_SESSION['username']){
 			$output['error'] = true;
-			$output['message'] = 'Something went wrong. Cannot update user role';
+			$output['message'] = 'For security reasons, you are not allowed to edit your own roles.';
+		}
+		else{
+			if($db->exec($sql)){
+				$output['message'] = 'User role deleted successfully';
+			} 
+			else{
+				$output['error'] = true;
+				$output['message'] = 'Something went wrong. Cannot update user role';
+			}
 		}
 	}
 	catch(PDOException $e){

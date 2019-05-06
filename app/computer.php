@@ -1,4 +1,7 @@
+
+
  <?php  
+ 
  include('redirectToLoginIfNotLoggedIn.php');
  include('redirectHome_AdminOnly.php');
  include('header.php');
@@ -14,32 +17,37 @@ echo '
   <div id="alert" class="alert alert-info text-center" style="margin-top:20px; display:none;">
     <button class="close"><span aria-hidden="true">&times;</span></button>
     <span id="alert_message"></span>
-  </div> 
-  <div class="columns columns-right btn-group float-left">
-    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Actions
-    </a>
-    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-    <a id="addnew" class="dropdown-item btn btn-success">Add Computer</a>
-    <div id="toolbar"><a id="theComputerButton" class="dropdown-item btn btn-success">Move Selected Items</a></div>
-    <div id="toolbar2">
-                  <select class="form-control">
-                    <option value="">Export</option>
-                    <option value="all">Export All</option>
-                    <option value="selected">Export Select</option>
-                </select>
-                </div>
-  </div>
-  </div>
+  </div> ';
+  if((in_array("USER", $_SESSION["userRoles"]) || in_array("MANAGER", $_SESSION["userRoles"]))) { //changed
+  echo '<div class="columns columns-right btn-group float-left">';
+        
+      if (in_array("USER", $_SESSION['userRoles'])) //changed
+      echo '
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Actions
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a id="addnew" class="dropdown-item btn btn-success">Add Computer</a>
+        <div id="toolbar"><a id="theComputerButton" class="dropdown-item btn btn-success">Move Selected Items</a></div>
+        <div id="toolbar2">
+                      <select class="form-control">
+                        <option value="">Export</option>
+                        <option value="all">Export All</option>
+                        <option value="selected">Export Select</option>
+                    </select>
+                    </div>';
+    echo '
+    </div>
+    </div>';
+  }
+  echo '
   <table id="myComputerAssets" class="responstable" data-toggle="table" data-search="true" data-pagination="true" data-search-align="left" data-show-columns="true" data-click-to-select="true" data-trim-on-search="false" data-multiple-search="true" data-show-export="true" data-toolbar="#toolbar2">
   <thead>
     <tr>
       <th><em class="fa fa-cog"></em></th>
       <th data-checkbox="true"></th>
       <th class="d-none" data-field="GUID" data-sortable="true">GUID</th>
-
       <th data-field="ASSIGNEE" data-sortable="true">Assignee</th>
-
       <th data-field="ITEM_TYPE" data-sortable="true">Item Type</th>
       <th data-field="SERIAL_NO" data-sortable="true">Serial Number</th>
       <th data-field="MODEL" data-sortable="true">Model</th>
@@ -51,7 +59,6 @@ echo '
       <th data-field="COMMENTS" data-sortable="true">Comments</th>
       <th data-field="STATUS" data-sortable="true">Status</th>
       <th data-field="COUNTY_NO" data-sortable="true">County Number</th>
-
       <th data-field="MAP_LOCATION" data-sortable="true">Map Location</th>
       <th data-field="WORK_SITE" data-sortable="true">Work Site</th>
       <th data-field="BUREAU" data-sortable="true">Bureau</th>
@@ -73,7 +80,12 @@ echo '
          
           echo'<tr align="center">
           <td>
-            <div class="btn-group" role="group">
+            <div class="btn-group" role="group">';
+            
+
+            if (in_array("USER", $_SESSION['userRoles'])) { //changed
+            
+                echo '
               <a class="edit-btn">
                 <button class="btn btn-primary btn-sm edit" data-id="'.$row["GUID"].'">
                 <em class="fas fa-pencil-alt"></em></button>
@@ -82,7 +94,10 @@ echo '
               <a class="delete-btn">
                 <button class="btn btn-danger btn-sm delete" data-id="'.$row["GUID"].'">
                 <em class="fas fa-trash-alt""></em></button>
-              </a>
+              </a>';
+            }
+
+            echo '
                <a class="info-btn">
                   <button class="btn btn-success btn-sm info" data-id="'.$row["GUID"].'">
                   <i class="fas fa-image"></i></button>
@@ -99,9 +114,9 @@ echo '
           </td>';
           echo        "<td></td>";   
           echo  "<td>" . $row['GUID'] . "</td>";
- 
+          // echo '<td><img src="'.$row['ASSIGNEE_IMAGE'].'" width="110" height="75"></td>';  
           echo        "<td>" . $row['ASSIGNEE'] . "</td>"; 
-
+          // echo '<td><img src="'.$row['ITEM_IMAGE'].'" width="110" height="75"></td>'; 
           echo        "<td>" . $row['ITEM_TYPE'] . "</td>"; 
           echo        "<td>" . $row['SERIAL_NO'] . "</td>";
           echo        "<td>" . $row['MODEL'] . "</td>";             
@@ -113,7 +128,7 @@ echo '
           echo        "<td>" . $row['COMMENTS'] . "</td>";
           echo        "<td>" . $row['STATUS'] . "</td>";
           echo        "<td>" . $row['COUNTY_NO'] . "</td>";
-
+          // echo '<td><img src="'.$row['LOCATION_IMAGE'].'" width="110" height="75"></td>'; 
           echo        "<td>" . $row['MAP_LOCATION'] . "</td>";
           echo        "<td>" . $row['WORK_SITE'] . "</td>";
           echo        "<td>" . $row['BUREAU'] . "</td>";
@@ -161,9 +176,17 @@ echo '
 <?php include("modalMove.php")?>
 <script src="move.js"></script>
 
+<!-- BootStrap Advance Search -->
+<!-- <script type="text/javascript">
+        $(document).ready(function () {
+          $('#myComputerAssets').bootstrapTable()
+        });
+</script> -->
 
 <!-- History -->
 <?php include("modalHistory.html")?>
+
+
 
 <!-- New Export Function much more cleaner-->
 <script>
@@ -182,3 +205,4 @@ echo '
 
 </body>
 </html>
+

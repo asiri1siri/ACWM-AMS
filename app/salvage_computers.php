@@ -18,7 +18,7 @@
   $conn = OpenCon();
   $sql = "SELECT * FROM SALVAGE_COMPUTER ORDER BY GUID";
 
-echo '<br><center><h1>Computer Inventory</h1></center>';
+echo '<br><center><h1>Salvage Computer Inventory</h1></center>';
 echo '
 <div class="col-md-12">
   <div id="alert" class="alert alert-info text-center" style="margin-top:20px; display:none;">
@@ -89,22 +89,12 @@ echo '
                 <em class="fas fa-pencil-alt"></em></button>
               </a>
 
-              <a class="delete-btn">
-                <button class="btn btn-danger btn-sm delete" data-id="'.$row["GUID"].'">
-                <em class="fas fa-trash-alt""></em></button>
+              <a class="restore-btn">
+                  <button class="btn btn-danger btn-sm restore" data-id="'.$row["GUID"].'">
+                  <em class="fas fa-undo-alt""></em></button>
               </a>
-               <a class="info-btn">
-                  <button class="btn btn-success btn-sm info" data-id="'.$row["GUID"].'">
-                  <i class="fas fa-image"></i></button>
-                </a>
-                
 
                 <input type="hidden" class="theCurrentTable" name="theCurrentTable" value="'.$table.'" />
-
-                <a class="history-btn">
-                  <button class="btn btn-secondary btn-sm history" data-id="'.$row["GUID"].'">
-                  <i class="fas fa-history"></i></button>
-                </a>
             </div>
           </td>';
           
@@ -162,33 +152,144 @@ echo '
 
 <body>
 
-
-<?php include("modalComputer.php")?> 
-<script src="appComputer.js"></script>
-
-<!-- Advanced Search + Move -->
-
-<?php include("modalMove.php")?>
-<script src="move.js"></script>
-
-
-<!-- History -->
-<?php include("modalHistory.html")?>
-
-<!-- New Export Function much more cleaner-->
 <script>
-  var $table = $('#myComputerAssets')
-  $(document).ready(function () {
-  $(function() {
-    $('#toolbar2').find('select').change(function () {
-      $table.bootstrapTable('destroy').bootstrapTable({
-        exportDataType: $(this).val(),
-        exportTypes: ['csv', 'excel', 'pdf']
-      })
-    }).trigger('change')
-  })
-});
+ $(document).ready(function()
+{
+  $(document).on('click', '.edit', function(){
+    var id = $(this).data('id');
+    getDetails(id);
+
+    //alert(id)
+    $('#edit').modal('show');
+  });
+
+    $('#editForm').submit(function(e){
+    e.preventDefault();
+    //var editform = $(this).serialize();
+    // var updateHistory = false;
+
+    var fd = new FormData(this);
+    
+    $.ajax({
+      method: 'POST',
+      url: 'editComputer.php',
+      data: fd,
+    contentType:false,
+    processData:false,
+      success:function(response){
+          //alert("hi")
+      if(response != 0){
+    
+      alert("error")
+      }else{
+
+          $.ajax({
+            method: 'POST',
+            url: 'addToHistory.php',
+            data: fd,
+            contentType:false,
+            processData: false
+          });
+
+          $('#edit').modal('hide');
+          myFunction();
+        
+      }
+            
+      }
+    });
+  });
+
+
+  //restore message (will move to salvage_asset table)
+  $(document).on('click', '.restore', function()
+  {
+    var id = $(this).data('id');
+    getDetails(id);
+    //alert(id);
+    $('#restore').modal('show');
+  });
+
+  $('#restoreForm').submit(function(e)
+  {
+    e.preventDefault();
+    var restoreform = $(this).serialize();
+
+    $.ajax(
+    {
+      method: 'POST',
+      url: 's_to_c.php',
+      data: restoreform,
+      dataType: 'json',
+      success: function(response)
+      {
+        $('#restore').modal('hide');
+        if(response.error)
+        {
+          $('#alert').show();
+          $('#alert_message').html(response.message);
+        }
+        else
+        {
+          $('#alert').show();
+		      $('#alert_message').html(response.message);
+		      myFunction();
+        }
+      }
+    });
+
+  });
+
+}); // end function
+
+function getDetails(id){
+  $.ajax({
+    method: 'POST',
+    url: 'fetch_row_salvage_computer.php',
+    data: {id:id},
+    dataType: 'json',
+    success: function(response){
+      if(response.error){
+        $('#edit').modal('hide');
+        $('#restore').modal('hide');
+        $('#alert').show();
+        $('#alert_message').html(response.message);
+      }
+      else{
+        $('.id').val(response.data.GUID);
+        $('.assignee').val(response.data.ASSIGNEE);
+        $('.item_type').val(response.data.ITEM_TYPE);
+        $('.serial_no').val(response.data.SERIAL_NO);
+        $('.model').val(response.data.MODEL);
+        $('.make').val(response.data.MAKE);
+        $('.cpu_type').val(response.data.CPU_TYPE);
+        $('.cpu_speed').val(response.data.CPU_SPEED);
+        $('.ram').val(response.data.RAM);
+        $('.hard_drive').val(response.data.HARD_DRIVE);
+        $('.comments').val(response.data.COMMENTS);
+        $('.status').val(response.data.STATUS);
+        $('.county_no').val(response.data.COUNTY_NO);
+        $('.map_location').val(response.data.MAP_LOCATION);
+        $('.work_site').val(response.data.WORK_SITE);
+        $('.bureau').val(response.data.BUREAU);
+        $('.division').val(response.data.DIVISION);
+        $('.program').val(response.data.PROGRAM);
+        $('.unit_code').val(response.data.UNIT_CODE); 
+      }
+    }
+  });
+}
+
+</script>
+
+<script>
+function myFunction() 
+{
+  location.reload();
+}
 </script>
 
 </body>
 </html>
+
+<?php include("modalComputer.php")?>

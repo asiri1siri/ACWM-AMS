@@ -24,8 +24,10 @@
 	// $result->execute();
 	// for($i=0; $row = $result->fetch(); $i++){
  //    $id=$row['GUID'];
-	
-	
+
+	$makesQuery = "SELECT MAKE from `makes`";	
+
+	$assigneeQuery = "SELECT EMPLOYEE_ID from `user_roles`";
 ?>
 
 
@@ -49,7 +51,16 @@
 
 						<div class="form-group col-md-6">
 							<label class="control-label">Assignee:</label>
-							<input type="text" class="form-control" name="assignee" id="assignee" >
+							<!-- <input type="text" class="form-control" name="assignee" id="assignee" > -->
+							<select	class="form-control" name="assignee" id="assignee">
+								<option value="Unassigned">Unassigned</option>
+								<?php
+									$assigneeAdd = $connection->query($assigneeQuery);
+									while ($row = $assigneeAdd->fetch()){
+										echo "<option value='".$row['EMPLOYEE_ID']."'>".$row['EMPLOYEE_ID']."</option>";
+									}
+								?>
+							</select>
 						</div>
 						
 						<div class="form-group col-md-6">
@@ -69,7 +80,15 @@
 									
 						<div class="form-group col-md-6">
 							<label class="control-label">Make:</label>
-							<input type="text" class="form-control" name="make" id="make">
+							<!-- <input type="text" class="form-control" name="make" id="make"> -->
+							<select class="form-control" name="make" id="make">
+								<?php
+									$makesAdd = $connection->query($makesQuery);
+									while ($row = $makesAdd->fetch()) {
+										echo "<option value='".$row['MAKE']."'>".$row['MAKE']."</option>";
+									}
+								?>
+							</select>
 						</div>				
 					
 						<div class="form-group col-md-6">
@@ -186,18 +205,18 @@
                          -->
                       
 
-                        <div class="form-group col-md-6.5">
+                        <div class="form-group col-md-6">
 							<label class="control-label">Assignee Image:</label>
 							<input type='file' name='file' id='file'>
 							
 						</div>
 
-						<div class="form-group col-md-5">
+						<div class="form-group col-md-6">
 							<label class="control-label">Item Image:</label>
 							<input type='file' name='file2' id='file2'>
 						</div>
 
-						<div class="form-group col-md-6.5">
+						<div class="form-group col-md-6">
 							<label class="control-label">Location Image:</label>
 							<input type='file' name='file3' id='file3'>
 						</div>
@@ -231,7 +250,16 @@
 					<div class="form-row">
 					<div class="form-group col-md-6">
                         <label class="control-label">Assignee:</label>
-                        <input type="text" class="form-control assignee" name="assignee" id="assignee">
+                        <!-- <input type="text" class="form-control assignee" name="assignee" id="assignee"> -->
+							<select	class="form-control assignee" name="assignee" id="assignee">
+								<option value="Unassigned">Unassigned</option>
+								<?php
+									$assigneeAdd = $connection->query($assigneeQuery);
+									while ($row = $assigneeAdd->fetch()){
+										echo "<option value='".$row['EMPLOYEE_ID']."'>".$row['EMPLOYEE_ID']."</option>";
+									}
+								?>
+							</select>
                     </div>
                     
                     <div class="form-group col-md-6">
@@ -251,7 +279,15 @@
                                 
                     <div class="form-group col-md-6">
                         <label class="control-label">Make:</label>
-                        <input type="text" class="form-control make" name="make" id="make">
+                        <!-- <input type="text" class="form-control make" name="make" id="make"> -->
+							<select class="form-control make" name="make" id="make">
+								<?php
+									$makesEdit = $connection->query($makesQuery);
+									while ($row = $makesEdit->fetch()) {
+										echo "<option value='".$row['MAKE']."'>".$row['MAKE']."</option>";
+									}
+								?>
+							</select>
                     </div>				
                 
                     <div class="form-group col-md-6">

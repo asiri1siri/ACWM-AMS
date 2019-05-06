@@ -1,6 +1,8 @@
 <?php
 	//the edit should be performed by modifying the chosen user's role_uid based in their uid
 
+	session_start();
+
 	// include_once('connection.php');
 	// // include('function.php');
 	// $output = array('error' => false);
@@ -72,25 +74,31 @@
 		 if($stmt->execute(array( ':uid' => $oldEmployeeUID , ':role' => $newRoleUID)))
 		 {
 			 $count = $stmt->rowCount();
-			 
-			//check for duplicate 
-		 	if($count > 0)
-			{
-				 $output['error'] = true;
-				 $output['message'] = 'Username with this role already exists.';
-			}	
-			else
-			{
-				//instead modify the application_roles table
-				// $sql = "UPDATE ROLES SET UID = '$result', ROLE = '$role' WHERE UID = '$result' AND ROLE = '$oldROLE'"; //where statement?
-				//if-else statement in executing our query
-				$sql = "update application_roles set role_uid = '$newRoleUID' where uid = '$oldEmployeeUID' and role_uid = '$oldRoleUID'";
-				if($db->exec($sql)){
-					$output['message'] = 'User role updated successfully';
-				} 
-				else{
+
+			if($oldUID === $_SESSION['username']){
+				$output['error'] = true;
+				$output['message'] = 'For security reasons, you are not allowed to edit your own roles.';
+			}
+			else{
+				//check for duplicate 
+				if($count > 0)
+				{
 					$output['error'] = true;
-					$output['message'] = 'Something went wrong. Cannot update user role ' . $oldEmployeeUID;
+					$output['message'] = 'Username with this role already exists.';
+				}	
+				else
+				{
+					//instead modify the application_roles table
+					// $sql = "UPDATE ROLES SET UID = '$result', ROLE = '$role' WHERE UID = '$result' AND ROLE = '$oldROLE'"; //where statement?
+					//if-else statement in executing our query
+					$sql = "update application_roles set role_uid = '$newRoleUID' where uid = '$oldEmployeeUID' and role_uid = '$oldRoleUID'";
+					if($db->exec($sql)){
+						$output['message'] = 'User role updated successfully';
+					} 
+					else{
+						$output['error'] = true;
+						$output['message'] = 'Something went wrong. Cannot update user role ' . $oldEmployeeUID;
+					}
 				}
 			}
 		}

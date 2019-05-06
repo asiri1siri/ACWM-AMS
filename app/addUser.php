@@ -1,6 +1,8 @@
 <?php
 	//the add should be performed by adding onto the application_roles based on the user's uid and the selected uid
 
+	session_start();
+
 	include_once('connection.php');
 	include('function.php');
 
@@ -42,31 +44,37 @@
 		{
 			$count = $stmt->rowCount();
 
-			if($count > 0)
-			{
-				// $result = $result->fetch();
+			if($_POST['uid'] == $_SESSION['username']){
 				$output['error'] = true;
-				$output['message'] = 'Username with this role already in use.';
-				//  alert("Username with this role already in use.");
- 				// exit();
-			 }	
-			 else
-			 {
-				//make use of prepared statement to prevent sql injection
-				// $stmt = $db->prepare("INSERT INTO ROLES (UID, ROLE) VALUES (:uid, :role)");
-				$stmt = $db->prepare("insert into acwm.application_roles values (:empID, '13347394-82b3-11e7-b36c-005056a5b2f3', :roleID, 'A')");
-				//if-else statement in executing our prepared statement
-				// if ($stmt->execute(array( ':uid' => $_POST['uid'] , ':role' => $_POST['role']))){
-					
-				// if ($stmt->execute(array( ':uid' => $theUID['ROLE_UID'] , ':role' => $_POST['role']))){
-					
-				if ($stmt->execute(array( ':empID' => $empID , ':roleID' => $roleID))){
-					$output['message'] = 'User role added successfully';
-					}
-				else{
-				$output['error'] = true;
-				$output['message'] = 'Something went wrong. Cannot add user role.';
-			} 
+				$output['message'] = 'For security reasons, you are not allowed to edit your own roles.';
+			}
+			else{
+				if($count > 0)
+				{
+					// $result = $result->fetch();
+					$output['error'] = true;
+					$output['message'] = 'Username with this role already in use.';
+					//  alert("Username with this role already in use.");
+					 // exit();
+				 }	
+				 else
+				 {
+					//make use of prepared statement to prevent sql injection
+					// $stmt = $db->prepare("INSERT INTO ROLES (UID, ROLE) VALUES (:uid, :role)");
+					$stmt = $db->prepare("insert into acwm.application_roles values (:empID, '13347394-82b3-11e7-b36c-005056a5b2f3', :roleID, 'A')");
+					//if-else statement in executing our prepared statement
+					// if ($stmt->execute(array( ':uid' => $_POST['uid'] , ':role' => $_POST['role']))){
+						
+					// if ($stmt->execute(array( ':uid' => $theUID['ROLE_UID'] , ':role' => $_POST['role']))){
+						
+					if ($stmt->execute(array( ':empID' => $empID , ':roleID' => $roleID))){
+						$output['message'] = 'User role added successfully';
+						}
+					else{
+					$output['error'] = true;
+					$output['message'] = 'Something went wrong. Cannot add user role.';
+				} 
+			}			
 		}	
 		}
 		else{

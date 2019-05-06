@@ -1,3 +1,5 @@
+
+
 <?php  
       include('redirectToLoginIfNotLoggedIn.php');
       include('redirectHome_AdminOnly.php');
@@ -189,5 +191,61 @@ echo '
 });
 </script>
 
+<!-- Single-Line Advance Search-->
+<!-- <script src="RESOURCES/myAdvanceSearch/js/jquery-3.3.1.min.js" type="text/javascript"></script>
+<script src="RESOURCES/myAdvanceSearch/js/addons/datatables.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('#myAssetTable').DataTable();
+        });
+    </script> -->
+
+  <!-- <script type="text/javaScript">
+      function doExport() {
+        $('#myAssetTable').tableExport({
+            type:'excel',
+            mso: {
+              styles: ['background-color',
+                       'color',
+                       'font-family',
+                       'font-size',
+                       'font-weight',
+                       'text-align']
+            }
+          }
+        );
+      }
+      function doExportCSV(){
+        $('#myAssetTable').tableExport({type:'csv'});
+      }
+      function doExportPDF(){
+        $('#myAssetTable').tableExport({type:'pdf',
+                           jspdf: {orientation: 'l',
+                                   format: 'a3',
+                                   margins: {left:10, right:10, top:20, bottom:20},
+                                   autotable: {styles: {fillColor: 'inherit', 
+                                                        textColor: 'inherit'},
+                                               tableWidth: 'auto'}
+            }
+         });
+      }
+
+  // drop down function for export 
+  $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
+  if (!$(this).next().hasClass('show')) {
+    $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+  }
+  var $subMenu = $(this).next(".dropdown-menu");
+  $subMenu.toggleClass('show');
+
+  $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
+    $('.dropdown-submenu .show').removeClass("show");
+  });
+
+  return false;
+});
+    </script> -->
+
 </body>
 </html>
+
